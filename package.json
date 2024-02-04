@@ -1,0 +1,24 @@
+{
+  "name": "backend_laafihub",
+  "version": "1.0.0",
+  "description": "node serveur app ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adamsoro0321/backend_laafihub.git"
+  },
+  "keywords": [
+    "express",
+    "mysql",
+    "node"
+  ],
+  "author": "SORO Adama",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adamsoro0321/backend_laafihub/issues"
+  },
+  "homepage": "https://github.com/adamsoro0321/backend_laafihub#readme"
+}
