@@ -2,7 +2,8 @@ const DB ={
     password:'123456',
     port:'5050',
     host:'localhost',
-    db:'laafihube',
     username:'postgres',
+    database:'laafihube',
+    dialect:'postgres'
 }
-module.exports=DB; 
+module.exports={DB}; 
