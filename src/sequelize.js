@@ -8,7 +8,6 @@ const appSequelize = new Sequelize(DB.database, DB.username, DB.password, {
     logging: false,
   });
 
-
   (async()=>{
     try {
         await appSequelize.authenticate();
@@ -22,7 +21,7 @@ const appSequelize = new Sequelize(DB.database, DB.username, DB.password, {
 const Assurance =AssuranceModel(appSequelize,DataTypes)
 
 
- appSequelize.sync({alter:true}).then(_=>console.log("sync succes"))
+appSequelize.sync({alter:true}).then(_=>console.log("sync succes"))
                                 .catch((e)=>{
                                   console.log(error,"===>", e)
                                 }) ;

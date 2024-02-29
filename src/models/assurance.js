@@ -1,6 +1,6 @@
 module.exports.AssuranceModel=(sequelize,DataTypes)=>{
 
-    return sequelize.define('',
+    return sequelize.define('Assurance',
             
          {  
           idAssurance:{
@@ -8,21 +8,11 @@ module.exports.AssuranceModel=(sequelize,DataTypes)=>{
                     autoIncrement: true,
                     primaryKey: true
             },
-            libelleAssurance:{
-                type: DataTypes.STRING
-            },
-            adresse:{
-                type: DataTypes.STRING
-            }, 
-            email:{
-                type: DataTypes.STRING
-            },
-            tel:{
-                type: DataTypes.STRING
-            },
-            siege:{
-                type: DataTypes.STRING
-            }
+            libellee:DataTypes.STRING,
+            adresse:DataTypes.STRING, 
+            email:DataTypes.STRING,
+            tel:DataTypes.STRING,
+            siege:DataTypes.STRING,
             
          },
          {}

@@ -1,29 +1,17 @@
 module.exports.cliniqueModel=(sequelize,DataTypes)=>{
 
-    return sequelize.define('',
-            
+    return sequelize.define('Clinique',           
          {  
-          ididClinique:{
+          idClinique:{
                     type: DataTypes.INTEGER,
                     autoIncrement: true,
                     primaryKey: true
               },
-          libelleClinique:{
-
-          },
-         adresse:{
-
-         },
-         email:{
-
-         },
-        tel:{
-
-        }, 
-        siege:{
-
-        }
-            
+        libelle:DataTypes.STRING,
+        adresse:DataTypes.STRING ,
+        email:DataTypes.STRING,
+        tel:DataTypes.STRING , 
+        siege:DataTypes.STRING,
          },
          {}
     )
