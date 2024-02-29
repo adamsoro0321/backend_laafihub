@@ -1,4 +1,4 @@
-module.exports.cliniqueModel=(sequelize,DataTypes)=>{
+module.exports.CliniqueModel=(sequelize,DataTypes)=>{
 
     return sequelize.define('Clinique',           
          {  

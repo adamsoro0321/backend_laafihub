@@ -11,7 +11,7 @@ module.exports.AssuranceCliniqueModel= (sequelize, DataTypes,Assurance,Clinique)
               type:DataTypes.INTEGER,
              references:{
                  model:Clinique,
-                 key:'idPharmacy'
+                 key:'idClinique'
         }
     }},{})
 }

@@ -8,7 +8,7 @@ module.exports.AdminCliniqueModel = (sequelize, DataTypes,Clinique) => {
             type:DataTypes.INTEGER,
             references:{
                 model:Clinique,
-                key:' idClinique'
+                key:'idClinique'
             }
         },
         nom: DataTypes.STRING,

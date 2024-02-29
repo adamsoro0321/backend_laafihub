@@ -1,4 +1,4 @@
-module.exports.PoliceAssuranceModel = (sequelize, DataTypes) => {
+module.exports.MaladieModel = (sequelize, DataTypes) => {
   return sequelize.define('Maladie', {
         idMaladie: {
             type: DataTypes.INTEGER,
