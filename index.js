@@ -19,9 +19,8 @@ const { AdminAssuranceControllers } = require('./src/controllers/adminassuranceC
 
 //ms@Off45
 
-
 const app =express()
-const port =5000
+const port =5000 ;
 
 app.use(bodyParser.json()) ;
 

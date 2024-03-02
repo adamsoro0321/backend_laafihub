@@ -7,6 +7,8 @@ const getAllAssurance =async (req,res)=>{
       } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
       }
 }
 
@@ -22,6 +24,8 @@ const getAssuranceById =async (req,res)=>{
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
     }
 }
 
@@ -31,6 +35,8 @@ const createAssurance =async (req,res)=>{
         const data =await Assurance.create(form_res);
         res.status(201).json({ message:'succes create  Article',data}) ;
     } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
     }
@@ -52,6 +58,7 @@ const updatAssurance =async (req, res)=>{
         }
     } catch (error) {
         res.status(500).json({ error: 'Something went wrong' });
+        res.status(500).json({ error: 'Something went wrong' });
     }
 }
 
@@ -66,6 +73,8 @@ const deleteAssurance=async (req,res)=>{
             res.status(404).json({error:'Assurance not found'});
         }
     } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
     }
