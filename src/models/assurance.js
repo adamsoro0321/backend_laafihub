@@ -8,7 +8,7 @@ module.exports.AssuranceModel=(sequelize,DataTypes)=>{
                     autoIncrement: true,
                     primaryKey: true
             },
-            libellee:DataTypes.STRING,
+            libelle:DataTypes.STRING,
             adresse:DataTypes.STRING, 
             email:DataTypes.STRING,
             tel:DataTypes.STRING,
