@@ -15,3 +15,5 @@ const assurances =[
 ]
 
 module.exports=assurances
+
+

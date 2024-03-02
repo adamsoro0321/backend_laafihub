@@ -2,8 +2,8 @@ const {Assure}=require('../sequelize');
 
 const getAllAssure =async (req,res)=>{
       try {
-        const Assures = await Assure.findAll() ;
-        res.json(Assures) ;
+        const data = await Assure.findAll() ;
+        res.json({message:'succes ',data}) ;
       } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
@@ -13,9 +13,9 @@ const getAllAssure =async (req,res)=>{
 const getAssureById =async (req,res)=>{
     try {
         const id =req.params.id ;
-       const r= await Assure.findByPk(id) ;
-    if (r) {
-        res.json(r) ;
+       const data= await Assure.findByPk(id) ;
+    if (data) {
+        res.json({message:'succes',data}) ;
          }else{
         res.status(404).json({error:'Assure not found'}) ;
       }
@@ -28,21 +28,25 @@ const getAssureById =async (req,res)=>{
 const createAssure =async (req,res)=>{
     try {
         const form_res=req.body ;
-        const newAssure =await Assure.create(form_res);
-        res.status(201).json({ message:'succes create  Article',data:newArticle}) ;
+        const data =await Assure.create(form_res);
+        res.status(201).json({ message:'succes create  assurer',data}) ;
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
     }
-}
+}  //192.168.14.174
 
 const updatAssure =async (req, res)=>{
     try {
         const id =req.params.id ;
-        const _assure =Assure.findByPk(id);
-        if (_assure) {
-            await _assure.update(req.body) ;
-            res.status(202).json(_assure)
+       
+        const _Assure =await Assure.findByPk(id);
+      //  console.log('updater' ,id ,_Assure)
+        if (_Assure) {
+            const data =req.body ;
+           /// console.log("body data",data) ;
+            await _Assure.update(req.body) ;
+            res.status(202).json(_Assure)
         } else {
             res.status(404).json({ error: 'Assure not found' });
         }
@@ -54,9 +58,9 @@ const updatAssure =async (req, res)=>{
 const deleteAssure=async (req,res)=>{
     try {
         const id =req.params.id ;
-        const _assure =Assure.findByPk(id);
-        if (_assure) {
-            await _assure.destroy() ;
+        const _Assure =await Assure.findByPk(id);
+        if (_Assure) {
+            await _Assure.destroy() ;
             res.status(200).json({message:'succes deleting'});
         } else {
             res.status(404).json({error:'Assure not found'});
@@ -74,3 +78,4 @@ module.exports.AssureControllers={
     updatAssure,
     deleteAssure,
 }
+// re

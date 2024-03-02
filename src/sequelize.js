@@ -23,7 +23,7 @@ const {PoliceAssuranceModel} =require('./models/policeassurance')
 const appSequelize = new Sequelize(DB.database, DB.username, DB.password, {
     host: DB.host,
     dialect:  DB.dialect,
-   logging: false,
+   logging: true,
   });
 
   (async()=>{
