@@ -134,4 +134,4 @@ app.delete('/api/v1/agentclinique/:id',(req,res)=>agentCliniqueControllers.delet
 app.use((req,res)=>{
     res.status(404).send("ressource not found !")
  })
-app.listen(port,()=>{console.log("app is running on port "+port)})
+app.listen(port,()=>{console.log("app is running on port "+port)})  
