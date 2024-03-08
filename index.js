@@ -162,4 +162,4 @@ app.delete('/api/v1/assurepolice/:id',(req,res)=>AssurePoliceControllers.deleteA
 app.use((req,res)=>{
     res.status(404).send("ressource not found !")
  })
-app.listen(port,()=>{console.log("app is running on port "+port)})
+app.listen(port,()=>{console.log("app is running on port "+port)})  
