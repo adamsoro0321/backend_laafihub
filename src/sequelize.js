@@ -18,7 +18,10 @@ const {MedecinConseilleModel} =require('./models/medecinconseille')
 const {MedecinCliniqueModel} =require('./models/medecinclinique')
 const {MaladieModel} =require('./models/maladie')
 const {PoliceMaladieModel} =require('./models/policemaladie')
-const {PoliceAssuranceModel} =require('./models/policeassurance')
+const {PoliceAssuranceModel} =require('./models/policeassurance');
+const { ApprobationModel } = require('./models/approbation');
+const { ReclammationModel } = require('./models/reclammation');
+const { AssurePoliceModel } = require('./models/assurepolice');
 
 const appSequelize = new Sequelize(DB.database, DB.username, DB.password, {
     host: DB.host,
@@ -57,7 +60,10 @@ const AssuranceClinique =AssuranceCliniqueModel(appSequelize,DataTypes,Assurance
 const AssuranceLabo =AssuranceLaboModel(appSequelize,DataTypes,Assurance, Labo)
 
 const PoliceMaladie = PoliceMaladieModel(appSequelize,DataTypes,PoliceAssurance, Maladie)
+const Approbation = ApprobationModel(appSequelize,DataTypes,MedecinClinique, Assure)
 
+const Reclammation = ReclammationModel(appSequelize,DataTypes, Assure)
+const AssurePolice = AssurePoliceModel(appSequelize,DataTypes, Assurance, PoliceAssurance, Assure)
 
 appSequelize.sync({alter:true}).then(_=>console.log("sync succes"))
                                 .catch((e)=>{
@@ -83,5 +89,8 @@ PoliceAssurance,
 AssurancePharmacy,
 AssuranceClinique,
 AssuranceLabo,
-PoliceMaladie
+PoliceMaladie,
+Approbation,
+Reclammation,
+AssurePolice
 }                                

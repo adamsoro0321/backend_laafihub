@@ -15,6 +15,10 @@ const { MaladieControllers } = require('./src/controllers/maladieControlleur');
 const { AgentCliniqueControllers } = require('./src/controllers/agentcliniqueControlleur');
 const { AdminCliniqueControllers } = require('./src/controllers/admincliniqueControlleur');
 const { AdminAssuranceControllers } = require('./src/controllers/adminassuranceControllers');
+const { ApprobationControllers } = require('./src/controllers/approbationControllers');
+const { ReclammationControllers } = require('./src/controllers/reclammationControllers');
+
+const { AssurePoliceControllers } = require('./src/controllers/assurepoliceControllers');
 
 
 //ms@Off45
@@ -125,12 +129,36 @@ app.delete('/api/v1/agentassurance/:id',(req,res)=>AgentAssuranceControllers.del
 
 
 /**agentCliniqueControllers */ 
-app.get('/api/v1/agentclinique', (req,res)=> agentCliniqueControllers.getAllagentClinique(req,res));
-app.get('/api/v1/agentclinique/:id',(req,res)=>agentCliniqueControllers.getagentCliniqueById(req, res));
-app.put('/api/v1/agentclinique/:id',(req,res)=>agentCliniqueControllers.updateagentClinique(req,res));
-app.post('/api/v1/agentclinique',(req,res)=>agentCliniqueControllers.createagentClinique(req,res));
-app.delete('/api/v1/agentclinique/:id',(req,res)=>agentCliniqueControllers.deleteagentClinique(req,res)) ;
+app.get('/api/v1/agentclinique', (req,res)=> AgentCliniqueControllers.getAllAgentClinique(req,res));
+app.get('/api/v1/agentclinique/:id',(req,res)=>AgentCliniqueControllers.getAgentCliniqueById(req, res));
+app.put('/api/v1/agentclinique/:id',(req,res)=>AgentCliniqueControllers.updateAgentClinique(req,res));
+app.post('/api/v1/agentclinique',(req,res)=>AgentCliniqueControllers.createAgentClinique(req,res));
+app.delete('/api/v1/agentclinique/:id',(req,res)=>AgentCliniqueControllers.deleteAgentClinique(req,res)) ;
  
+
+/**approbationControllers */ 
+app.get('/api/v1/approbation', (req,res)=> ApprobationControllers.getAllApprobation(req,res));
+app.get('/api/v1/approbation/:id',(req,res)=>ApprobationControllers.getApprobationById(req, res));
+app.put('/api/v1/approbation/:id',(req,res)=>ApprobationControllers.updAteapprobation(req,res));
+app.post('/api/v1/approbation',(req,res)=>ApprobationControllers.createApprobation(req,res));
+app.delete('/api/v1/approbation/:id',(req,res)=>ApprobationControllers.deleteApprobation(req,res)) ;
+ 
+/**ReclammationControllers */ 
+app.get('/api/v1/reclammation', (req,res)=> ReclammationControllers.getAllReclammation(req,res));
+app.get('/api/v1/reclammation/:id',(req,res)=>ReclammationControllers.getReclammationById(req, res));
+app.put('/api/v1/reclammation/:id',(req,res)=>ReclammationControllers.updAteReclammation(req,res));
+app.post('/api/v1/reclammation',(req,res)=>ReclammationControllers.createReclammation(req,res));
+app.delete('/api/v1/reclammation/:id',(req,res)=>ReclammationControllers.deleteReclammation(req,res)) ;
+ 
+
+/**AssurePoliceControllers */ 
+app.get('/api/v1/assurepolice', (req,res)=> AssurePoliceControllers.getAllAssurePolice(req,res));
+app.get('/api/v1/assurepolice/:id',(req,res)=>AssurePoliceControllers.getAssurePoliceById(req, res));
+app.put('/api/v1/assurepolice/:id',(req,res)=>AssurePoliceControllers.updAteAssurePolice(req,res));
+app.post('/api/v1/assurepolice',(req,res)=>AssurePoliceControllers.createAssurePolice(req,res));
+app.delete('/api/v1/assurepolice/:id',(req,res)=>AssurePoliceControllers.deleteAssurePolice(req,res)) ;
+
+
 app.use((req,res)=>{
     res.status(404).send("ressource not found !")
  })

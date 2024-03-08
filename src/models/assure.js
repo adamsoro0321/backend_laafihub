@@ -14,6 +14,7 @@ module.exports.AssureModel =(Sequelize,DataTypes,Assurance)=>{
                                   key:'idAssurance'
                              }
                         },
+                       
                         nom:DataTypes.STRING  ,
                         prenom:DataTypes.STRING,
                         tel:DataTypes.STRING,

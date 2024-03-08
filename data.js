@@ -14,6 +14,5 @@ const assurances =[
 
 ]
 
-module.exports=assurances
-
+module.exports=assurances;
 
