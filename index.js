@@ -1,6 +1,7 @@
 const express= require('express')
 const {appSequilize }= require('./src/sequelize');
 const bodyParser = require('body-parser');
+const bcrypt =require('bcrypt');
 
 const { AssureControllers } = require('./src/controllers/assureControlleur');
 const { AssuranceControllers } = require('./src/controllers/assuranceControlleur');
@@ -19,14 +20,23 @@ const { ApprobationControllers } = require('./src/controllers/approbationControl
 const { ReclammationControllers } = require('./src/controllers/reclammationControllers');
 
 const { AssurePoliceControllers } = require('./src/controllers/assurepoliceControllers');
+const AppMulter = require('./src/multer');
+const auth = require('./src/auth/auth');
+
 
 
 //ms@Off45
 
 const app =express()
-const port =5000 ;
-
 app.use(bodyParser.json()) ;
+
+
+
+
+
+
+/** admin assurance */
+app.post('/api/v1/admin_assurance/login',(req,res)=>AdminAssuranceControllers.login(req,res)) ;
 
 /** assure endpont */
  app.get('/api/v1/assure', (req,res)=> AssureControllers.getAllAssure(req,res));
@@ -36,13 +46,13 @@ app.use(bodyParser.json()) ;
  app.delete('/api/v1/assure/:id',(req,res)=>AssureControllers.deleteAssure(req,res))
 
  /**assurance endpoind */
- app.get('/api/v1/assurance', (req,res)=> AssuranceControllers.getAllAssurance(req,res));
- app.get('/api/v1/assurance/:id',(req,res)=>AssuranceControllers.getAssuranceById(req, res));
- app.put('/api/v1/assurance/:id',(req,res)=>AssuranceControllers.updatAssurance(req,res));
- app.post('/api/v1/assurance',(req,res)=>AssuranceControllers.createAssurance(req,res));
- app.delete('/api/v1/assurance/:id',(req,res)=>AssuranceControllers.deleteAssurance(req,res)) ;
+ app.get('/api/v1/assurance',(req,res,next)=>auth(req,res,next),(req,res)=> AssuranceControllers.getAllAssurance(req,res));
+ app.get('/api/v1/assurance/:id',(req,res,next)=>auth(req,res,next),(req,res)=>AssuranceControllers.getAssuranceById(req, res));
+ app.put('/api/v1/assurance/:id',(req,res,next)=>auth(req,res,next),(req,res)=>AssuranceControllers.updatAssurance(req,res));
+ app.post('/api/v1/assurance',(req,res,next)=>auth(req,res,next),(req,res)=>AssuranceControllers.createAssurance(req,res));
+ app.delete('/api/v1/assurance/:id',(req,res,next)=>auth(req,res,next),(req,res)=>AssuranceControllers.deleteAssurance(req,res)) ;
 
-/**clinique endpoint  */ CliniqueControllers
+/**clinique endpoint  */
 app.get('/api/v1/clinique', (req,res)=> CliniqueControllers.getAllClinique(req,res));
 app.get('/api/v1/clinique/:id',(req,res)=>CliniqueControllers.getCliniqueById(req, res));
 app.put('/api/v1/clinique/:id',(req,res)=>CliniqueControllers.updateClinique(req,res));
@@ -159,7 +169,18 @@ app.post('/api/v1/assurepolice',(req,res)=>AssurePoliceControllers.createAssureP
 app.delete('/api/v1/assurepolice/:id',(req,res)=>AssurePoliceControllers.deleteAssurePolice(req,res)) ;
 
 
+/** upload image with multer */
+
+app.post('/api/v1/image', AppMulter.single('file'),(req,res)=>{
+    res.jsonp({message:'succes'})
+}) ;
+
+
+
+
 app.use((req,res)=>{
     res.status(404).send("ressource not found !")
  })
-app.listen(port,()=>{console.log("app is running on port "+port)})  
+
+
+module.exports=app ;

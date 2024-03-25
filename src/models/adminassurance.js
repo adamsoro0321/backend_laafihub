@@ -1,3 +1,4 @@
+
 module.exports.AdminAssuranceModel = (sequelize, DataTypes,Assurance) => {
     return sequelize.define('AdminAssurance', {
         idAdminAssurance: {
@@ -13,9 +14,46 @@ module.exports.AdminAssuranceModel = (sequelize, DataTypes,Assurance) => {
         },
         nom: DataTypes.STRING,
         prenom: DataTypes.STRING,
-        tel: DataTypes.STRING,
-        email: DataTypes.STRING,
+        image:{
+            type:DataTypes.STRING,
+            
+        },
+        fullName:{
+            type:DataTypes.VIRTUAL,
+            get() {
+                return `${this.nom} ${this.prenom}`;
+              },
+        },
+        tel: {type:DataTypes.STRING,
+               unique:{
+                msg:'Le numero est deja utiliser'
+                     }
+           },
+        email: {type:DataTypes.STRING,
+                   allowNull:false ,
+                 unique:{
+                    msg:"Le email est déja utiliser"
+                 }   
+                },
         adresse: DataTypes.STRING,
-        password:DataTypes.STRING,
+        password:{
+            type:DataTypes.STRING,
+            allowNull:false ,
+            
+        },
     });
 };
+
+
+/**
+ {
+    idAdminAssurance:'',
+    idAssurance:''
+    nom:'',
+    prenom:'',
+    tel:'',
+    email:'',
+    adresse:'',
+    password:''
+ }
+ */

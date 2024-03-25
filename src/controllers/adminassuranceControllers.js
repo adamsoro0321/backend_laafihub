@@ -1,5 +1,7 @@
 const {AdminAssurance}=require('../sequelize');
-
+const bcrypt =require('bcrypt') ;
+const jwt =require('jsonwebtoken'); 
+const private_key=require('../auth/private_key')
 const getAllAdminAssurance =async (req,res)=>{
       try {
         const data = await AdminAssurance.findAll() ;
@@ -71,11 +73,46 @@ const deleteAdminAssurance=async (req,res)=>{
     }
 }
 
+const login =async (req,res)=>{
+    try {
+        let email =req.body.email ;
+        let password=req.body.password ;
+        if (!email || !password) {
+            const message="Entrez un email et un mot de passe";
+           return  res.status(402).json({message}) ;
+        }
+       const user= await AdminAssurance.findOne({where:{email:email}})
+       if (!user) {
+        const message=`Cet email n'est pas Enregistrez ${email} `;
+          return  res.status(402).json({message}) ;
+       }
+      bcrypt.compare(password,user.password,(err,result)=>{
+        if (result) {
+            const token =jwt.sign(
+                {userId:user.email},
+                private_key,
+                {expiresIn:'24h'}
+            )
+           
+            const message=`L\'utilisateur à été connecté avec succes ` ;
+            return   res.status(200).json({message,user,token}) ;
+          } else {
+           const message=`Mot de passe incorrect `;
+          return  res.status(400).json({message}) ;
+          }
+       } ) ;
+      
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+}
 module.exports.AdminAssuranceControllers={
     getAllAdminAssurance,
     getAdminAssuranceById,
     createAdminAssurance,
     updatAdminAssurance,
     deleteAdminAssurance,
+    login
 }
 // re
