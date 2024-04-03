@@ -2,6 +2,7 @@ const express= require('express')
 const {appSequilize }= require('./src/sequelize');
 const bodyParser = require('body-parser');
 const bcrypt =require('bcrypt');
+const cors =require('cors') ;
 
 const { AssureControllers } = require('./src/controllers/assureControlleur');
 const { AssuranceControllers } = require('./src/controllers/assuranceControlleur');
@@ -29,7 +30,7 @@ const auth = require('./src/auth/auth');
 
 const app =express()
 app.use(bodyParser.json()) ;
-
+app.use(cors())
 
 
 
@@ -175,10 +176,20 @@ app.post('/api/v1/image', AppMulter.single('file'),(req,res)=>{
     res.jsonp({message:'succes'})
 }) ;
 
+/** RFID  http://192.168.1.81:5000/api/v1/rfid */
 
 
+app.post('/api/v1/rfid', (req,res)=>{
+      const data =req.body ;
+       console.log(`data from rfid card ${JSON.stringify(data)} `)
+       res.status(202).json({message:'Succes'}) ;
+
+
+} ) ;
 
 app.use((req,res)=>{
+    
+
     res.status(404).send("ressource not found !")
  })
 

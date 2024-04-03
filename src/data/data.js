@@ -172,7 +172,91 @@ const assurances =[
         tel: '6663330000',
         siege: 'Siège10'
     }
+] ;
+
+[
+    {
+        "idAssurance": 3,
+        "nom": "Dupont",
+        "prenom": "Jean",
+        "tel": "0123456789",
+        "email": "jean.dupont@example.com",
+        "adresse": "123 Rue de la Liberté"
+    },
+    {
+        "idAssurance": 2,
+        "nom": "Martin",
+        "prenom": "Marie",
+        "tel": "9876543210",
+        "email": "marie.martin@example.com",
+        "adresse": "456 Avenue des Roses"
+    },
+    {
+        "idAssurance": 1,
+        "nom": "Dubois",
+        "prenom": "Pierre",
+        "tel": "1112223333",
+        "email": "pierre.dubois@example.com",
+        "adresse": "789 Boulevard du Soleil"
+    },
+    {
+        "idAssurance": 5,
+        "nom": "Lefebvre",
+        "prenom": "Sophie",
+        "tel": "4445556666",
+        "email": "sophie.lefebvre@example.com",
+        "adresse": "1010 Rue de la Paix"
+    },
+    {
+        "idAssurance": 4,
+        "nom": "Moreau",
+        "prenom": "Thomas",
+        "tel": "7778889999",
+        "email": "thomas.moreau@example.com",
+        "adresse": "2020 Avenue de la République"
+    },
+    {
+        "idAssurance": 7,
+        "nom": "Garcia",
+        "prenom": "Ana",
+        "tel": "3336669999",
+        "email": "ana.garcia@example.com",
+        "adresse": "3030 Rue de la Liberté"
+    },
+    {
+        "idAssurance": 6,
+        "nom": "Fournier",
+        "prenom": "Luc",
+        "tel": "5551114444",
+        "email": "luc.fournier@example.com",
+        "adresse": "4040 Avenue de la Liberté"
+    },
+    {
+        "idAssurance": 9,
+        "nom": "Roux",
+        "prenom": "Julie",
+        "tel": "2224446666",
+        "email": "julie.roux@example.com",
+        "adresse": "5050 Rue de la Concorde"
+    },
+    {
+        "idAssurance": 8,
+        "nom": "Sanchez",
+        "prenom": "Manuel",
+        "tel": "9998887777",
+        "email": "manuel.sanchez@example.com",
+        "adresse": "6060 Avenue de la Liberté"
+    },
+    {
+        "idAssurance": 10,
+        "nom": "Caron",
+        "prenom": "Émilie",
+        "tel": "6663330000",
+        "email": "emilie.caron@example.com",
+        "adresse": "7070 Rue de la République"
+    }
 ]
+
 
 module.exports.data ={
     admin_assurance ,
