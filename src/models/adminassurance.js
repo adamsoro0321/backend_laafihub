@@ -35,6 +35,10 @@ module.exports.AdminAssuranceModel = (sequelize, DataTypes,Assurance) => {
                     msg:"Le email est déja utiliser"
                  }   
                 },
+        type:{
+           type:DataTypes.STRING,
+           defaultValue:'admin'
+        }    ,    
         adresse: DataTypes.STRING,
         password:{
             type:DataTypes.STRING,
