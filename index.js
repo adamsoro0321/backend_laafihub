@@ -36,8 +36,13 @@ app.use(cors())
 
 
 
-/** admin assurance */
-app.post('/api/v1/admin_assurance/login',(req,res)=>AdminAssuranceControllers.login(req,res)) ;
+/** agent assurance */
+app.post('/api/v1/asssurance/agent/login',(req,res)=>AgentAssuranceControllers.login(req,res) ) ;
+app.get('/api/v1/asssurance/agent', (req,res)=> AgentAssuranceControllers.getAllAgentAssurance(req,res));
+ app.get('/api/v1/asssurance/agent/:id',(req,res)=>AgentAssuranceControllers.getAgentAssuranceById(req, res));
+ app.put('/api/v1/asssurance/agent/:id',(req,res)=>AgentAssuranceControllers.updatAgentAssurance(req,res));
+ app.post('/api/v1/asssurance/agent',(req,res)=>AgentAssuranceControllers.createAgentAssurance(req,res));
+ app.delete('/api/v1/asssurance/agent/:id',(req,res)=>AgentAssuranceControllers.deleteAgentAssurance(req,res))
 
 /** assure endpont */
  app.get('/api/v1/assure', (req,res)=> AssureControllers.getAllAssure(req,res));
@@ -46,7 +51,7 @@ app.post('/api/v1/admin_assurance/login',(req,res)=>AdminAssuranceControllers.lo
  app.post('/api/v1/assure',(req,res)=>AssureControllers.createAssure(req,res));
  app.delete('/api/v1/assure/:id',(req,res)=>AssureControllers.deleteAssure(req,res))
 
- /**assurance endpoind */
+ /**assurance endpoint */
  app.get('/api/v1/assurance',(req,res,next)=>auth(req,res,next),(req,res)=> AssuranceControllers.getAllAssurance(req,res));
  app.get('/api/v1/assurance/:id',(req,res,next)=>auth(req,res,next),(req,res)=>AssuranceControllers.getAssuranceById(req, res));
  app.put('/api/v1/assurance/:id',(req,res,next)=>auth(req,res,next),(req,res)=>AssuranceControllers.updatAssurance(req,res));

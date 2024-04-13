@@ -257,8 +257,112 @@ const assurances =[
     }
 ]
 
+const agentsAssurance = [
+    {
+        idAgentAssurance: 1,
+        idAssurance: 1,
+        password: "motdepasse1",
+        image: "url_de_l_image_1",
+        email: "agent1@example.com",
+        nom: "Smith",
+        prenom: "John",
+        type: "agent"
+    },
+    {
+        idAgentAssurance: 2,
+        idAssurance: 1,
+        password: "motdepasse2",
+        image: "url_de_l_image_2",
+        email: "agent2@example.com",
+        nom: "Doe",
+        prenom: "Jane",
+        type: "agent"
+    },
+    {
+        idAgentAssurance: 3,
+        idAssurance: 2,
+        password: "motdepasse3",
+        image: "url_de_l_image_3",
+        email: "agent3@example.com",
+        nom: "Johnson",
+        prenom: "Robert",
+        type: "agent"
+    },
+    {
+        idAgentAssurance: 4,
+        idAssurance: 2,
+        password: "motdepasse4",
+        image: "url_de_l_image_4",
+        email: "agent4@example.com",
+        nom: "Brown",
+        prenom: "Linda",
+        type: "agent"
+    },
+    {
+        idAgentAssurance: 5,
+        idAssurance: 3,
+        password: "motdepasse5",
+        image: "url_de_l_image_5",
+        email: "agent5@example.com",
+        nom: "Wilson",
+        prenom: "Michael",
+        type: "agent"
+    },
+    {
+        idAgentAssurance: 6,
+        idAssurance: 3,
+        password: "motdepasse6",
+        image: "url_de_l_image_6",
+        email: "agent6@example.com",
+        nom: "Taylor",
+        prenom: "Sarah",
+        type: "agent"
+    },
+    {
+        idAgentAssurance: 7,
+        idAssurance: 4,
+        password: "motdepasse7",
+        image: "url_de_l_image_7",
+        email: "agent7@example.com",
+        nom: "Anderson",
+        prenom: "James",
+        type: "agent"
+    },
+    {
+        idAgentAssurance: 8,
+        idAssurance: 4,
+        password: "motdepasse8",
+        image: "url_de_l_image_8",
+        email: "agent8@example.com",
+        nom: "Martinez",
+        prenom: "Jennifer",
+        type: "agent"
+    },
+    {
+        idAgentAssurance: 9,
+        idAssurance: 5,
+        password: "motdepasse9",
+        image: "url_de_l_image_9",
+        email: "agent9@example.com",
+        nom: "Harris",
+        prenom: "David",
+        type: "agent"
+    },
+    {
+        idAgentAssurance: 10,
+        idAssurance: 5,
+        password: "motdepasse10",
+        image: "url_de_l_image_10",
+        email: "agent10@example.com",
+        nom: "Clark",
+        prenom: "Lisa",
+        type: "agent"
+    }
+];
+
 
 module.exports.data ={
     admin_assurance ,
-    assurances
+    assurances,
+    agentsAssurance
 }

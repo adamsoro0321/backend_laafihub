@@ -76,6 +76,7 @@ module.exports ={
   appSequelize,
   Assurance,
 Assure,
+AgentAssurance,
 AdminAssurance,
 Clinique,
 AgentClinique,
