@@ -1,6 +1,6 @@
 module.exports.MedecinCliniqueModel = (sequelize, DataTypes,Clinique) => {
     const MedecinClinique = sequelize.define('MedecinClinique', {
-        idMedecinClinique: {
+        id:{
             type:DataTypes.INTEGER,
             primaryKey:true,
             autoIncrement:true
@@ -9,7 +9,7 @@ module.exports.MedecinCliniqueModel = (sequelize, DataTypes,Clinique) => {
             type:DataTypes.INTEGER,
             references:{
                 model:Clinique,
-                key:'idClinique'
+                key:'id'
             }
         },
         nom: DataTypes.STRING,

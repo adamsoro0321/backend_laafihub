@@ -1,11 +1,11 @@
 module.exports.MaladieModel = (sequelize, DataTypes) => {
-  return sequelize.define('Maladie', {
-        idMaladie: {
+  return sequelize.define('maladie', {
+        id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-        libelle:{
+        label:{
             type: DataTypes.STRING,
             allowNull:false,
           },

@@ -1,7 +1,7 @@
 
-module.exports.ReclammationModel = (sequelize, DataTypes, Assure) => {
+module.exports.ReclammationModel = (sequelize, DataTypes, Assure,agentAssurance) => {
     const Reclammation = sequelize.define('Reclammation', {
-        idReclammation:{
+        id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
@@ -11,11 +11,16 @@ module.exports.ReclammationModel = (sequelize, DataTypes, Assure) => {
             type:DataTypes.INTEGER,
             references:{
                   model:Assure,
-                  key:'idAssure'
+                  key:'id'
             }
         },
-        idAgentAssurence:{
-            type:DataTypes.INTEGER
+        idAgentAssurance:{
+            /** id de l'agent qui va gerer la reclamation de l'assurer */
+            type:DataTypes.INTEGER,
+            references:{
+                model:agentAssurance,
+                key:'id'
+             }
         },
         titre:{
             type:DataTypes.STRING

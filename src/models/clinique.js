@@ -2,7 +2,7 @@ module.exports.CliniqueModel=(sequelize,DataTypes)=>{
 
     return sequelize.define('Clinique',           
          {  
-          idClinique:{
+          id:{
                     type: DataTypes.INTEGER,
                     autoIncrement: true,
                     primaryKey: true

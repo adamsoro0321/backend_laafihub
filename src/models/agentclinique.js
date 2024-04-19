@@ -10,7 +10,7 @@ module.exports.AgentCliniqueModel = (sequelize, DataTypes,Clinique) => {
                 type:DataTypes.INTEGER,
                 references:{
                       model:Clinique ,
-                      key:'idClinique'
+                      key:'id'
                 }
         },
         nom: DataTypes.STRING,
@@ -18,6 +18,13 @@ module.exports.AgentCliniqueModel = (sequelize, DataTypes,Clinique) => {
         tel: DataTypes.STRING,
         email: DataTypes.STRING,
         password:DataTypes.STRING,
+        type:{
+            type:DataTypes.STRING,
+            defaultValue:'agent',
+            validate:{
+                isIn: [['agent','admin']],
+            }
+        },
     });
 
 

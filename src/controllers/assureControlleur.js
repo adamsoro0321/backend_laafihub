@@ -1,4 +1,5 @@
 const {Assure}=require('../sequelize');
+const bcrypt = require('bcrypt');
 
 const getAllAssure =async (req,res)=>{
       try {
@@ -25,16 +26,30 @@ const getAssureById =async (req,res)=>{
     }
 }
 
-const createAssure =async (req,res)=>{
+
+
+const createAssure = async (req, res) => {
     try {
-        const form_res=req.body ;
-        const data =await Assure.create(form_res);
-        res.status(201).json({ message:'succes create  assurer',data}) ;
+        // Extraction du mot de passe de la requête
+        const { password } = req.body;
+
+        // Hash du mot de passe
+        const hashedPassword = await bcrypt.hash(password, 10); // Utilisation de 10 rounds de salage
+
+        // Création de l'assuré avec le mot de passe haché
+        const assure = await Assure.create({
+            ...req.body, // Utilisation de la déstructuration pour inclure tous les champs de la requête
+            password: hashedPassword,
+        });
+
+        res.status(201).json({ message: 'Assuré créé avec succès', assure });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: 'Something went wrong' });
+        res.status(500).json({ error: 'Erreur lors de la création de l\'assuré' });
     }
-}  //192.168.14.174
+};
+
+
 
 const updatAssure =async (req, res)=>{
     try {

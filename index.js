@@ -3,38 +3,30 @@ const {appSequilize }= require('./src/sequelize');
 const bodyParser = require('body-parser');
 const bcrypt =require('bcrypt');
 const cors =require('cors') ;
+const { AssureControllers ,
+    AssuranceControllers,
+     CliniqueControllers,
+    MedecinCliniqueControllers,
+    PoliceAssuranceControllers,
+     PharmacyControllers,
+     LaboControllers,
+    AgentAssuranceControllers,
+    MedecinConseilleControllers,
+    MaladieControllers,
+    AgentCliniqueControllers ,
+    AdminCliniqueControllers ,
+    AdminAssuranceControllers,
+    ApprobationControllers ,
+    ReclammationControllers,
+    StructureControllers } = require('./src/controllers');
 
-const { AssureControllers } = require('./src/controllers/assureControlleur');
-const { AssuranceControllers } = require('./src/controllers/assuranceControlleur');
-const { CliniqueControllers } = require('./src/controllers/cliniqueControlleur');
-const { MedecinCliniqueControllers } = require('./src/controllers/medecincliniqueControlleur');
-const { PoliceAssuranceControllers } = require('./src/controllers/policeassuranceControlleur');
-const { PharmacyControllers } = require('./src/controllers/pharmacyControlleur');
-const { LaboControllers } = require('./src/controllers/laboControlleur');
-const { AgentAssuranceControllers } = require('./src/controllers/agentassuranceControlleur');
-const { MedecinConseilleControllers } = require('./src/controllers/medecinconseilleControlleur');
-const { MaladieControllers } = require('./src/controllers/maladieControlleur');
-const { AgentCliniqueControllers } = require('./src/controllers/agentcliniqueControlleur');
-const { AdminCliniqueControllers } = require('./src/controllers/admincliniqueControlleur');
-const { AdminAssuranceControllers } = require('./src/controllers/adminassuranceControllers');
-const { ApprobationControllers } = require('./src/controllers/approbationControllers');
-const { ReclammationControllers } = require('./src/controllers/reclammationControllers');
 
-const { AssurePoliceControllers } = require('./src/controllers/assurepoliceControllers');
 const AppMulter = require('./src/multer');
 const auth = require('./src/auth/auth');
-
-
-
-//ms@Off45
 
 const app =express()
 app.use(bodyParser.json()) ;
 app.use(cors())
-
-
-
-
 
 /** agent assurance */
 app.post('/api/v1/asssurance/agent/login',(req,res)=>AgentAssuranceControllers.login(req,res) ) ;
@@ -66,7 +58,6 @@ app.post('/api/v1/clinique',(req,res)=>CliniqueControllers.createClinique(req,re
 app.delete('/api/v1/clinique/:id',(req,res)=>CliniqueControllers.deleteClinique(req,res)) ;
 
 /**MedecinCliniqueControllers */ 
-
 app.get('/api/v1/medecinclinique', (req,res)=> MedecinCliniqueControllers.getAllMedecinClinique(req,res));
 app.get('/api/v1/medecinclinique/:id',(req,res)=>MedecinCliniqueControllers.getMedecinCliniqueById(req, res));
 app.put('/api/v1/medecinclinique/:id',(req,res)=>MedecinCliniqueControllers.updatMedecinClinique(req,res));
@@ -119,7 +110,7 @@ app.delete('/api/v1/maladie/:id',(req,res)=>MaladieControllers.deleteMaladie(req
 /** endpoint agentclinque  */
 
 
-/**AdminCliniqueControllers */ 
+/**AdminClinique */ 
 app.get('/api/v1/adminclinique', (req,res)=> AdminCliniqueControllers.getAllAdminClinique(req,res));
 app.get('/api/v1/adminclinique/:id',(req,res)=>AdminCliniqueControllers.getAdminCliniqueById(req, res));
 app.put('/api/v1/adminclinique/:id',(req,res)=>AdminCliniqueControllers.updateAdminClinique(req,res));
@@ -174,6 +165,13 @@ app.put('/api/v1/assurepolice/:id',(req,res)=>AssurePoliceControllers.updAteAssu
 app.post('/api/v1/assurepolice',(req,res)=>AssurePoliceControllers.createAssurePolice(req,res));
 app.delete('/api/v1/assurepolice/:id',(req,res)=>AssurePoliceControllers.deleteAssurePolice(req,res)) ;
 
+/** Structure endpoint */
+
+app.get('/api/v1/structures', (req,res)=>StructureControllers.getAllStructure(req,res) );
+app.get('/api/v1/stucture/:id',(req,res)=>StructureControllers.getStructureById(req, res));
+app.put('/api/v1/structure/:id',(req,res)=>StructureControllers.updatStructure(req,res));
+app.post('/api/v1/structure',(req,res)=>StructureControllers.createStructure(req,res));
+app.delete('/api/v1/structure/:id',(req,res)=>StructureControllers.deleteStructure(req,res)) ;
 
 /** upload image with multer */
 
@@ -189,12 +187,9 @@ app.post('/api/v1/rfid', (req,res)=>{
        console.log(`data from rfid card ${JSON.stringify(data)} `)
        res.status(202).json({message:'Succes'}) ;
 
-
 } ) ;
 
 app.use((req,res)=>{
-    
-
     res.status(404).send("ressource not found !")
  })
 

@@ -10,14 +10,14 @@ module.exports.ApprobationModel = (sequelize, DataTypes, MedecinClinique, Assure
                 type:DataTypes.INTEGER,
                 references:{
                       model:MedecinClinique,
-                      key:'idMedecinClinique'
+                      key:'id'
                 }
         },
         idAssure:{
             type:DataTypes.INTEGER,
             references:{
                   model:Assure,
-                  key:'idAssure'
+                  key:'id'
             }
         },
         idAgentAssurence:{

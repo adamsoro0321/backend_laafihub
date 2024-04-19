@@ -3,7 +3,7 @@ module.exports.AssuranceModel=(sequelize,DataTypes)=>{
     return sequelize.define('Assurance',
             
          {  
-          idAssurance:{
+          id:{
                     type: DataTypes.INTEGER,
                     autoIncrement: true,
                     primaryKey: true

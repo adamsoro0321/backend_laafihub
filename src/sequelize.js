@@ -1,27 +1,16 @@
 const {Sequelize,DataTypes} = require('sequelize');
-const {DB} =require('./config')
-/*Importation des models*/
-const {AssuranceModel} =require('./models/assurance')
-const {CliniqueModel} =require('./models/clinique')
-const {PharmacyModel} =require('./models/pharmacy')
+const {DB} =require('./config');
 
-const {AdminAssuranceModel} =require('./models/adminassurance')
-const {AdminCliniqueModel} =require('./models/adminclinique')
-const {AgentAssuranceModel} =require('./models/agentassurance')
-const {AgentCliniqueModel} =require('./models/agentclinique')
-const {AssuranceCliniqueModel} =require('./models/assuranceclinique')
-const {AssuranceLaboModel} =require('./models/assurancelabo')
-const {AssurancePharmacyModel} =require('./models/assurancepharmacy')
-const {AssureModel} =require('./models/assure')
-const {LaboModel} =require('./models/labo')
-const {MedecinConseilleModel} =require('./models/medecinconseille')
-const {MedecinCliniqueModel} =require('./models/medecinclinique')
-const {MaladieModel} =require('./models/maladie')
-const {PoliceMaladieModel} =require('./models/policemaladie')
-const {PoliceAssuranceModel} =require('./models/policeassurance');
-const { ApprobationModel } = require('./models/approbation');
-const { ReclammationModel } = require('./models/reclammation');
-const { AssurePoliceModel } = require('./models/assurepolice');
+/*Importation des models*/
+const {
+  AssuranceModel, CliniqueModel, PharmacyModel, AgentAssuranceModel,
+  AgentCliniqueModel, AssureModel, LaboModel, MedecinCliniqueModel,
+  MaladieModel, PoliceMaladieModel, PoliceAssuranceModel, ApprobationModel,
+  ReclammationModel, CategorieModel, StructureModel, OffreModel,
+  OffreCategorieModel, OperationMedicalModel, PoliceOperationMedicalModel
+} =require('./models');
+
+
 
 const appSequelize = new Sequelize(DB.database, DB.username, DB.password, {
     host: DB.host,
@@ -29,69 +18,115 @@ const appSequelize = new Sequelize(DB.database, DB.username, DB.password, {
    logging: true,
   });
 
-  (async()=>{
+  async function initializeDatabase() {
     try {
-        await appSequelize.authenticate();
-        console.log('Connection has been established successfully.');
-      } catch (error) {
-        console.error('Unable to connect to the database:', error);
-      }
-})() 
+      await appSequelize.authenticate();
+      console.log('Connection has been established successfully.');
+    } catch (error) {
+      console.error('Unable to connect to the database:', error);
+    }
+  }
+  initializeDatabase() ;
 
+const Structure=StructureModel(appSequelize,DataTypes);
+const Offre =OffreModel(appSequelize,DataTypes);
+const Maladie = MaladieModel(appSequelize,DataTypes)
+const OperationMedical =OperationMedicalModel(appSequelize,DataTypes);
+
+const PoliceAssurance =PoliceAssuranceModel(appSequelize,DataTypes)
+const Categorie=CategorieModel(appSequelize,DataTypes,PoliceAssurance);
+const offreCategorie =OffreCategorieModel(appSequelize,DataTypes,Offre,Categorie) ;
 
 const Assurance =AssuranceModel(appSequelize,DataTypes)
-const Assure =AssureModel(appSequelize,DataTypes,Assurance)
-const AdminAssurance =AdminAssuranceModel(appSequelize,DataTypes,Assurance)
+const Assure =AssureModel(appSequelize,DataTypes,Categorie,Structure)
+
 const Clinique =CliniqueModel(appSequelize,DataTypes)
 const AgentClinique = AgentCliniqueModel(appSequelize,DataTypes,Clinique)
-const AgentAssurance = AgentAssuranceModel(appSequelize,DataTypes,Assurance)
+const AgentAssurance = AgentAssuranceModel(appSequelize,DataTypes)
 
-const AdminClinique = AdminCliniqueModel(appSequelize,DataTypes,Clinique)
-const Labo =LaboModel(appSequelize,DataTypes)
-const Pharmacy =PharmacyModel(appSequelize,DataTypes)
-const MedecinConseille =MedecinConseilleModel(appSequelize,DataTypes,Assurance)
+const Labo = LaboModel(appSequelize,DataTypes)
+const Pharmacy = PharmacyModel(appSequelize,DataTypes)
 const MedecinClinique =MedecinCliniqueModel(appSequelize,DataTypes,Clinique)
 
-const Maladie =MaladieModel(appSequelize,DataTypes)
-const PoliceAssurance =PoliceAssuranceModel(appSequelize,DataTypes)
-const AssurancePharmacy =AssurancePharmacyModel(appSequelize,DataTypes,Assurance, Pharmacy)
-const AssuranceClinique =AssuranceCliniqueModel(appSequelize,DataTypes,Assurance,Clinique)
 
-const AssuranceLabo =AssuranceLaboModel(appSequelize,DataTypes,Assurance, Labo)
+const PoliceMaladie = PoliceMaladieModel(appSequelize,DataTypes,PoliceAssurance, Maladie);
+const Approbation = ApprobationModel(appSequelize,DataTypes,MedecinClinique, Assure);
 
-const PoliceMaladie = PoliceMaladieModel(appSequelize,DataTypes,PoliceAssurance, Maladie)
-const Approbation = ApprobationModel(appSequelize,DataTypes,MedecinClinique, Assure)
+const Reclammation = ReclammationModel(appSequelize,DataTypes,Assure,AgentAssurance) ;
 
-const Reclammation = ReclammationModel(appSequelize,DataTypes, Assure)
-const AssurePolice = AssurePoliceModel(appSequelize,DataTypes, Assurance, PoliceAssurance, Assure)
+const policeOps= PoliceOperationMedicalModel(appSequelize,DataTypes,PoliceAssurance,OperationMedical)
+/** relation assurer- structure 1 à plusiers: un assurer fait partie d"au plus une structure */
+ Structure.hasMany(Assure)
+ Assure.belongsTo(Structure)
+
+
+/** relation assurer -categorie 1 à plusieurs :un assurer à au plus une categorie */
+Categorie.hasMany(Assure)
+Assure.belongsTo(Categorie)
+
+/** assurer-reclamation : un assurer peux avoir plusieurs reclamations */
+
+Reclammation.belongsTo(Assure);
+Assure.hasMany(Reclammation);
+
+/** reclamtion - agent assurer*/
+Reclammation.belongsTo(AgentAssurance);
+AgentAssurance.hasMany(Reclammation);
+
+/** policeassurance-maladi */
+PoliceAssurance.belongsToMany(Maladie,{through: PoliceMaladie   })
+Maladie.belongsToMany(PoliceAssurance,{through:PoliceMaladie })
+
+/** offre -categori assurance */ 
+
+Offre.belongsToMany(Categorie,{through:offreCategorie}) 
+Categorie.belongsToMany(Offre,{through:offreCategorie})
+
+/** relation entre un medecinClinique et un clinique */
+
+Clinique.hasMany(MedecinClinique)
+MedecinClinique.belongsTo(Clinique)
+
+
+
+/** relation police-maladie */
+PoliceAssurance.belongsToMany(Maladie,{through:PoliceMaladie }) ;
+Maladie.belongsToMany(PoliceAssurance,{through:PoliceMaladie}) ;
+
+/** relation police-maladie */
+PoliceAssurance.belongsToMany(OperationMedical,{through:policeOps }) ;
+OperationMedical.belongsToMany(PoliceAssurance,{through:policeOps}) ;
+
+
+/** relation  categorie-police on-to-many */
+Categorie.hasMany(PoliceAssurance);
+PoliceAssurance.belongsTo(Categorie)
+
 
 appSequelize.sync({alter:true}).then(_=>console.log("sync succes"))
                                 .catch((e)=>{
                                   console.log('error',"===>", e)
                                 }) ;
                        
-                                
+                             
 
 module.exports ={
-  appSequelize,
-  Assurance,
+appSequelize,
+Assurance,
 Assure,
 AgentAssurance,
-AdminAssurance,
 Clinique,
 AgentClinique,
-AdminClinique,
 Labo,
 Pharmacy,
-MedecinConseille,
 MedecinClinique,
 Maladie,
 PoliceAssurance,
-AssurancePharmacy,
-AssuranceClinique,
-AssuranceLabo,
 PoliceMaladie,
 Approbation,
 Reclammation,
-AssurePolice
-}                                
+Offre,
+Categorie,
+Structure,
+OperationMedical
+}                             
