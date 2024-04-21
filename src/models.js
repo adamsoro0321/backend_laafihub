@@ -23,6 +23,8 @@ const { OffreModel } = require('./models/Offre');
 const { OffreCategorieModel } = require('./models/OffreCategorie');
 const { OperationMedicalModel } = require('./models/OperationMedicales');
 const { PoliceOperationMedicalModel } = require('./models/policeOperationMedical');
+const { PartenaireModel } = require('./models/Partenaire')
+
 
 module.exports={
     AssuranceModel,
@@ -43,5 +45,6 @@ StructureModel ,
 OffreModel,
 OffreCategorieModel ,
  OperationMedicalModel ,
-PoliceOperationMedicalModel
+PoliceOperationMedicalModel,
+PartenaireModel
 }

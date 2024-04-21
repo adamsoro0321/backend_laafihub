@@ -7,7 +7,8 @@ const {
   AgentCliniqueModel, AssureModel, LaboModel, MedecinCliniqueModel,
   MaladieModel, PoliceMaladieModel, PoliceAssuranceModel, ApprobationModel,
   ReclammationModel, CategorieModel, StructureModel, OffreModel,
-  OffreCategorieModel, OperationMedicalModel, PoliceOperationMedicalModel
+  OffreCategorieModel, OperationMedicalModel, PoliceOperationMedicalModel,
+  PartenaireModel
 } =require('./models');
 
 
@@ -32,6 +33,8 @@ const Structure=StructureModel(appSequelize,DataTypes);
 const Offre =OffreModel(appSequelize,DataTypes);
 const Maladie = MaladieModel(appSequelize,DataTypes)
 const OperationMedical =OperationMedicalModel(appSequelize,DataTypes);
+
+const Partenaire=PartenaireModel(appSequelize,DataTypes);
 
 const PoliceAssurance =PoliceAssuranceModel(appSequelize,DataTypes)
 const Categorie=CategorieModel(appSequelize,DataTypes,PoliceAssurance);
@@ -128,5 +131,6 @@ Reclammation,
 Offre,
 Categorie,
 Structure,
-OperationMedical
+OperationMedical,
+Partenaire
 }                             

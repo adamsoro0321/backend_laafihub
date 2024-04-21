@@ -1,10 +1,12 @@
-module.exports.PharmacyModel = (sequelize, DataTypes) => {
-    const Pharmacy = sequelize.define('Pharmacy', {
-        id: {
+
+module.exports.PartenaireModel = (sequelize, DataTypes) => {
+    const Structure= sequelize.define('Partenaire', {
+        id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
+      
         intitule:{
             type:DataTypes.STRING,
         },
@@ -16,15 +18,13 @@ module.exports.PharmacyModel = (sequelize, DataTypes) => {
         },
         tel: {
             type:DataTypes.STRING
-           
         },
         adresse: {
             type:DataTypes.STRING,
           
              }, 
         email: {
-            type:DataTypes.STRING,
-                
+            type:DataTypes.STRING,            
             validate:{
                 isEmail: true, 
             }
@@ -32,7 +32,6 @@ module.exports.PharmacyModel = (sequelize, DataTypes) => {
         image:{
             type:DataTypes.STRING,
         },
-      
         isMailValid: {
             type:DataTypes.BOOLEAN,
             defaultValue: false
@@ -41,7 +40,28 @@ module.exports.PharmacyModel = (sequelize, DataTypes) => {
         emailValideDate:{
             type:DataTypes.DATE,
         },
+        type:{
+            type:DataTypes.STRING,
+            defaultValue:'clinique',
+            validate:{
+                isIn: ['clinique','pharmacy','laboratoire','clinique_laboratoire'],
+            }
+        }
     });
 
-    return Pharmacy;
+
+    return Structure;
 };
+
+/**
+ * 
+ *{
+    "id":""
+	"intitule":
+    "code":
+    "password":
+    "image":
+    "email":
+    "type":
+ }
+ */
