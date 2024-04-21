@@ -28,6 +28,11 @@ const app =express()
 app.use(bodyParser.json()) ;
 app.use(cors())
 
+/** root */
+app.get('/',(req,res)=>{
+   res.json({message:"BienVenue sur laafiSeeb API :  "})
+} )
+
 /**1.0 agent assurance */
 app.post('/api/v1/asssurance/agent/login',(req,res)=>AgentAssuranceControllers.login(req,res) ) ;
 app.get('/api/v1/asssurance/agent', (req,res)=> AgentAssuranceControllers.getAllAgentAssurance(req,res));
