@@ -1,4 +1,4 @@
-module.exports.PoliceAssuranceModel = (sequelize, DataTypes) => {
+module.exports.PoliceModel = (sequelize, DataTypes) => {
  return sequelize.define('Police', {
         id: {
             type: DataTypes.INTEGER,
@@ -7,6 +7,7 @@ module.exports.PoliceAssuranceModel = (sequelize, DataTypes) => {
         },
         numero:{
             type:DataTypes.STRING,
+            allawNull:false,
             unique:{
                 msg:'Le code est deja utiliser'
                      }

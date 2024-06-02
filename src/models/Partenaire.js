@@ -1,5 +1,5 @@
 
-module.exports.PartenaireModel = (sequelize, DataTypes) => {
+module.exports.PartenaireModel = (sequelize, DataTypes,type='clinique') => {
     const Structure= sequelize.define('Partenaire', {
         id:{
             type: DataTypes.INTEGER,
@@ -42,9 +42,9 @@ module.exports.PartenaireModel = (sequelize, DataTypes) => {
         },
         type:{
             type:DataTypes.STRING,
-            defaultValue:'clinique',
+            defaultValue:type,
             validate:{
-                isIn: ['clinique','pharmacy','laboratoire','clinique_laboratoire'],
+                isIn:[ ['clinique','pharmacy','laboratoire','clinique_laboratoire']],
             }
         }
     });
@@ -53,15 +53,3 @@ module.exports.PartenaireModel = (sequelize, DataTypes) => {
     return Structure;
 };
 
-/**
- * 
- *{
-    "id":""
-	"intitule":
-    "code":
-    "password":
-    "image":
-    "email":
-    "type":
- }
- */

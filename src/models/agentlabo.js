@@ -1,17 +1,23 @@
 
-module.exports.AgentAssuranceModel = (sequelize, DataTypes,type='agent') => {
-    const AgentAssurance = sequelize.define('AgentAssurance', {
+module.exports.AgentLaboModel = (sequelize, DataTypes,Partenaire) => {
+    const AgentLabo = sequelize.define('agent_labo', {
         id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-       
+       idlabo:{
+          type:DataTypes.INTEGER,
+                references:{
+                      model:Partenaire ,
+                      key:'id'
+                }
+       },
         type:{
             type:DataTypes.STRING,
-            defaultValue:type,
+            defaultValue:'agent',
             validate:{
-                isIn: [['agent','admin','medecin']],
+                isIn: ['agent','admin'],
             }
         },
         nom: {
@@ -53,12 +59,25 @@ module.exports.AgentAssuranceModel = (sequelize, DataTypes,type='agent') => {
             defaultValue: false
         }
         ,
-        emailValideDate:{
+        email_valide_date:{
             type:DataTypes.DATE,
         },
     });
 
 
-    return AgentAssurance;
+    return AgentLabo;
 };
 
+/**
+ * 
+ *{
+    "idAgentAssurance":""
+	"idAssurance":
+    "password":
+    "image":
+    "email":
+    "nom:"
+    "prenom":
+    "type":
+ }
+ */

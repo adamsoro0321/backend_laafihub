@@ -1,8 +1,8 @@
-const {AgentClinique,Clinique }=require('../sequelize');
+const {AgentPharma,Pharmacy }=require('../sequelize');
 
-const getAllAgentClinique =async (req,res)=>{
+const getAllAgentPharma =async (req,res)=>{
       try {
-        const data = await AgentClinique.findAll( {
+        const data = await AgentPharma.findAll( {
             include: [
                 { model: Clinique},
             ]
@@ -14,10 +14,10 @@ const getAllAgentClinique =async (req,res)=>{
       }
 }
 
-const getAgentCliniqueById =async (req,res)=>{
+const getAgentPharmaById =async (req,res)=>{
     try {
         const id =req.params.id ;
-       const data= await AgentClinique.findByPk(id,{
+       const data= await AgentPharma.findByPk(id,{
         include: [
             { model: Clinique},
         ]
@@ -25,7 +25,7 @@ const getAgentCliniqueById =async (req,res)=>{
     if (data) {
         res.json({message:'succes',data}) ;
          }else{
-        res.status(404).json({error:'AgentClinique not found'}) ;
+        res.status(404).json({error:'AgentPharma not found'}) ;
       }
     } catch (error) {
         console.error(error);
@@ -33,10 +33,10 @@ const getAgentCliniqueById =async (req,res)=>{
     }
 }
 
-const createAgentClinique =async (req,res)=>{
+const createAgentPharma =async (req,res)=>{
     try {
         const form_res=req.body ;
-        const data =await AgentClinique.create(form_res);
+        const data =await AgentPharma.create(form_res);
         res.status(201).json({ message:'succes create  Article',data}) ;
     } catch (error) {
         console.error(error);
@@ -44,34 +44,34 @@ const createAgentClinique =async (req,res)=>{
     }
 }  //192.168.14.174
 
-const updatAgentClinique =async (req, res)=>{
+const updatAgentPharma =async (req, res)=>{
     try {
         const id =req.params.id ;
        
-        const _AgentClinique =await AgentClinique.findByPk(id);
-      //  console.log('updater' ,id ,_AgentClinique)
-        if (_AgentClinique) {
+        const _AgentPharma =await AgentPharma.findByPk(id);
+      //  console.log('updater' ,id ,_AgentPharma)
+        if (_AgentPharma) {
             const data =req.body ;
            /// console.log("body data",data) ;
-            await _AgentClinique.update(req.body) ;
-            res.status(202).json(_AgentClinique)
+            await _AgentPharma.update(req.body) ;
+            res.status(202).json(_AgentPharma)
         } else {
-            res.status(404).json({ error: 'AgentClinique not found' });
+            res.status(404).json({ error: 'AgentPharma not found' });
         }
     } catch (error) {
         res.status(500).json({ error: 'Something went wrong' });
     }
 }
 
-const deleteAgentClinique=async (req,res)=>{
+const deleteAgentPharma=async (req,res)=>{
     try {
         const id =req.params.id ;
-        const _AgentClinique = await AgentClinique.findByPk(id);
-        if (_AgentClinique) {
-            await _AgentClinique.destroy() ;
+        const _AgentPharma = await AgentPharma.findByPk(id);
+        if (_AgentPharma) {
+            await _AgentPharma.destroy() ;
             res.status(200).json({message:'succes deleting'});
         } else {
-            res.status(404).json({error:'AgentClinique not found'});
+            res.status(404).json({error:'AgentPharma not found'});
         }
     } catch (error) {
         console.error(error);
@@ -79,11 +79,11 @@ const deleteAgentClinique=async (req,res)=>{
     }
 }
 
-module.exports.AgentCliniqueControllers={
-    getAllAgentClinique,
-    getAgentCliniqueById,
-    createAgentClinique,
-    updatAgentClinique,
-    deleteAgentClinique,
+module.exports.AgentPharmaControllers={
+    getAllAgentPharma,
+    getAgentPharmaById,
+    createAgentPharma,
+    updatAgentPharma,
+    deleteAgentPharma,
 }
 // re

@@ -13,17 +13,17 @@ const auth =(req, res, next)=>{
    jwt.verify(token ,private_key , (err,decoded)=>{
         if (err) {
             const message =`Vous n'avez pas l'autorisation de connextion ! veillez reessayer plus tard ` ;
-            return res.status(401).json({message})
+            return res.status(403).json({message})
         }
-
-        const id =decoded.userId ;
+      /*  const id =decoded.userId ;
         if (req.body.email!==id) {
            
             const message =`L'identifiant de l'utilisateur est invalide  }` ;
-            return res.status(401).json({message})
+            return res.status(403).json({message})
         } else {
             next() ;
-        }
+        }*/
+        next() ;
     })
 }
 

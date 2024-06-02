@@ -1,8 +1,4 @@
 const {Offre}=require('../sequelize');
-const bcrypt=require('bcrypt');
-const jwt =require('jsonwebtoken') ;
-
-
 
 const getAllOffre =async (req,res)=>{
       try {

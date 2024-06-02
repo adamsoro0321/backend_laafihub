@@ -8,6 +8,9 @@ module.exports.MaladieModel = (sequelize, DataTypes) => {
         label:{
             type: DataTypes.STRING,
             allowNull:false,
+            unique:{
+              msg: "Label deja existant"
+            }
           },
         description:DataTypes.TEXT ,
     });

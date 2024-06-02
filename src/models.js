@@ -3,17 +3,15 @@ const {CliniqueModel} =require('./models/clinique')
 const {PharmacyModel} =require('./models/pharmacy')
 
 
-const {AgentAssuranceModel} =require('./models/agentassurance')
-const {AgentCliniqueModel} =require('./models/agentclinique')
+
 
 const {AssureModel} =require('./models/assure')
 const {LaboModel} =require('./models/labo')
 
-const {MedecinCliniqueModel} =require('./models/medecinclinique')
 const {MaladieModel} =require('./models/maladie')
 const {PoliceMaladieModel} =require('./models/policemaladie')
-const {PoliceAssuranceModel} =require('./models/police');
-const { ApprobationModel } = require('./models/approbation');
+const {PoliceModel} =require('./models/police');
+
 const { ReclammationModel } = require('./models/reclammation');
 
 /** v2 introduction de la structure */
@@ -24,27 +22,39 @@ const { OffreCategorieModel } = require('./models/OffreCategorie');
 const { OperationMedicalModel } = require('./models/OperationMedicales');
 const { PoliceOperationMedicalModel } = require('./models/policeOperationMedical');
 const { PartenaireModel } = require('./models/Partenaire')
+const { RfidIdentifyModel } = require('./models/rfidIdentifyModel')
+
+const {AgentAssuranceModel} =require('./models/agentassurance')
+const {AgentCliniqueModel} =require('./models/agentclinique')
+const { AgentPharmacyceModel } = require('./models/agentPharmacy');
+const { AgentCliniqueLaboModel } = require('./models/agentCliniqueLabo');
+const { AgentLaboModel } = require('./models/agentlabo')
+const { PrescriptionModel } = require('./models/Prescription')
 
 
 module.exports={
-    AssuranceModel,
+AssuranceModel,
 CliniqueModel,
 PharmacyModel,
 AgentAssuranceModel,
 AgentCliniqueModel,
 AssureModel,
 LaboModel,
-MedecinCliniqueModel,
+
 MaladieModel,
 PoliceMaladieModel,
-PoliceAssuranceModel,
-ApprobationModel,
- ReclammationModel,
- CategorieModel,
+PoliceModel,
+PrescriptionModel,
+ReclammationModel,
+CategorieModel,
 StructureModel ,
 OffreModel,
 OffreCategorieModel ,
- OperationMedicalModel ,
+OperationMedicalModel ,
 PoliceOperationMedicalModel,
-PartenaireModel
+PartenaireModel,
+RfidIdentifyModel,
+AgentCliniqueLaboModel,
+AgentLaboModel,
+AgentPharmacyceModel
 }

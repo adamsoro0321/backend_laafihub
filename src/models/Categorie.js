@@ -13,7 +13,10 @@ module.exports.CategorieModel =(Sequelize,DataTypes,police)=>{
                               model:police ,
                               key:'id'
                           }
-                        },                  
+                        },    
+                       label:{
+                          type:DataTypes.STRING,
+                       }  ,             
                         cout:{
                                 type:DataTypes.STRING,
                                  allowNull:false } ,

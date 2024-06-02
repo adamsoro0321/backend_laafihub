@@ -1,17 +1,23 @@
 
-module.exports.AgentAssuranceModel = (sequelize, DataTypes,type='agent') => {
-    const AgentAssurance = sequelize.define('AgentAssurance', {
+module.exports.AgentCliniqueLaboModel = (sequelize, DataTypes,Partenaire) => {
+    const AgentCliniqueLabo = sequelize.define('agent_clinique_labo', {
         id:{
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
         },
-       
+       id_clinique:{
+              type:DataTypes.INTEGER,
+                references:{
+                      model:Partenaire,
+                      key:'id'
+                }
+       },
         type:{
             type:DataTypes.STRING,
-            defaultValue:type,
+            defaultValue:'agent',
             validate:{
-                isIn: [['agent','admin','medecin']],
+                isIn: ['agent','admin'],
             }
         },
         nom: {
@@ -59,6 +65,19 @@ module.exports.AgentAssuranceModel = (sequelize, DataTypes,type='agent') => {
     });
 
 
-    return AgentAssurance;
+    return AgentCliniqueLabo;
 };
 
+/**
+ * 
+ *{
+    "idAgentPharmacyce":""
+	"idPharmacyce":
+    "password":
+    "image":
+    "email":
+    "nom:"
+    "prenom":
+    "type":
+ }
+ */

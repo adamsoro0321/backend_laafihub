@@ -3,20 +3,22 @@ const {DB} =require('./config');
 
 /*Importation des models*/
 const {
-  AssuranceModel, CliniqueModel, PharmacyModel, AgentAssuranceModel,
-  AgentCliniqueModel, AssureModel, LaboModel, MedecinCliniqueModel,
-  MaladieModel, PoliceMaladieModel, PoliceAssuranceModel, ApprobationModel,
+  AssuranceModel, AgentAssuranceModel,
+  AgentCliniqueModel, AssureModel, 
+  MaladieModel, PoliceMaladieModel, PoliceModel, 
   ReclammationModel, CategorieModel, StructureModel, OffreModel,
   OffreCategorieModel, OperationMedicalModel, PoliceOperationMedicalModel,
-  PartenaireModel
+  PartenaireModel,RfidIdentifyModel,AgentCliniqueLaboModel,AgentLaboModel,AgentPharmacyceModel,
+  PrescriptionModel
 } =require('./models');
+
 
 
 
 const appSequelize = new Sequelize(DB.database, DB.username, DB.password, {
     host: DB.host,
     dialect:  DB.dialect,
-   logging: true,
+  // logging: true,
   });
 
   async function initializeDatabase() {
@@ -35,37 +37,54 @@ const Maladie = MaladieModel(appSequelize,DataTypes)
 const OperationMedical =OperationMedicalModel(appSequelize,DataTypes);
 
 const Partenaire=PartenaireModel(appSequelize,DataTypes);
+const RfidIdentify=RfidIdentifyModel(appSequelize,DataTypes);
 
-const PoliceAssurance =PoliceAssuranceModel(appSequelize,DataTypes)
-const Categorie=CategorieModel(appSequelize,DataTypes,PoliceAssurance);
+const Police =PoliceModel(appSequelize,DataTypes)
+const Categorie=CategorieModel(appSequelize,DataTypes,Police);
 const offreCategorie =OffreCategorieModel(appSequelize,DataTypes,Offre,Categorie) ;
 
 const Assurance =AssuranceModel(appSequelize,DataTypes)
-const Assure =AssureModel(appSequelize,DataTypes,Categorie,Structure)
+const Assure =AssureModel(appSequelize,DataTypes,Police,Structure)
 
-const Clinique =CliniqueModel(appSequelize,DataTypes)
+
+const Clinique =PartenaireModel(appSequelize,DataTypes)
+const Labo =PartenaireModel(appSequelize,DataTypes,'laboratoire')
+const Pharmacy =PartenaireModel(appSequelize,DataTypes,'pharmacy')
+const CliniqueLabo =PartenaireModel(appSequelize,DataTypes,'clinique_laboratoire')
+
 const AgentClinique = AgentCliniqueModel(appSequelize,DataTypes,Clinique)
 const AgentAssurance = AgentAssuranceModel(appSequelize,DataTypes)
+const AgentLabo =AgentLaboModel(appSequelize,DataTypes,Labo) ;
+const AgentPharma = AgentPharmacyceModel(appSequelize,DataTypes,Pharmacy);
+const AgentCliniqueLabo =AgentCliniqueLaboModel(appSequelize,DataTypes,CliniqueLabo);
 
-const Labo = LaboModel(appSequelize,DataTypes)
-const Pharmacy = PharmacyModel(appSequelize,DataTypes)
-const MedecinClinique =MedecinCliniqueModel(appSequelize,DataTypes,Clinique)
+const MedecinConseille=AgentAssuranceModel(appSequelize,DataTypes,'medecin')
 
 
-const PoliceMaladie = PoliceMaladieModel(appSequelize,DataTypes,PoliceAssurance, Maladie);
-const Approbation = ApprobationModel(appSequelize,DataTypes,MedecinClinique, Assure);
+const PoliceMaladie = PoliceMaladieModel(appSequelize,DataTypes,Police, Maladie);
+const Prescription = PrescriptionModel(appSequelize,DataTypes, Assure,AgentClinique,AgentAssurance);
 
 const Reclammation = ReclammationModel(appSequelize,DataTypes,Assure,AgentAssurance) ;
 
-const policeOps= PoliceOperationMedicalModel(appSequelize,DataTypes,PoliceAssurance,OperationMedical)
+const policeOps= PoliceOperationMedicalModel(appSequelize,DataTypes,Police,OperationMedical)
+
+
 /** relation assurer- structure 1 à plusiers: un assurer fait partie d"au plus une structure */
  Structure.hasMany(Assure)
  Assure.belongsTo(Structure)
 
 
 /** relation assurer -categorie 1 à plusieurs :un assurer à au plus une categorie */
-Categorie.hasMany(Assure)
-Assure.belongsTo(Categorie)
+Police.hasMany(Assure,{
+  foreignKey: 'idPolice',
+  as: 'Assures'
+})
+Assure.belongsTo(Police,{
+  foreignKey: {
+     name: 'idPolice',
+     as: 'Police' 
+  },
+ })
 
 /** assurer-reclamation : un assurer peux avoir plusieurs reclamations */
 
@@ -77,34 +96,75 @@ Reclammation.belongsTo(AgentAssurance);
 AgentAssurance.hasMany(Reclammation);
 
 /** policeassurance-maladi */
-PoliceAssurance.belongsToMany(Maladie,{through: PoliceMaladie   })
-Maladie.belongsToMany(PoliceAssurance,{through:PoliceMaladie })
+Police.belongsToMany(Maladie,{through: PoliceMaladie   })
+Maladie.belongsToMany(Police,{through:PoliceMaladie })
 
-/** offre -categori assurance */ 
+/** offre -categori assurance 
 
 Offre.belongsToMany(Categorie,{through:offreCategorie}) 
-Categorie.belongsToMany(Offre,{through:offreCategorie})
+Categorie.belongsToMany(Offre,{through:offreCategorie});*/ 
 
+/** Strucuterure police  */
+Structure.belongsToMany(Police,{through:'structure_police'}) ;
+Police.belongsToMany(Structure,{through:'structure_police'});
+
+/** structure -assurer */
+
+Structure.hasMany(Assure,{
+  foreignKey: {
+    name: 'idStructure',
+  },
+});
+Assure.belongsTo(Structure,{
+  foreignKey: {
+    name: 'idStructure',
+  },
+})
 /** relation entre un medecinClinique et un clinique */
 
-Clinique.hasMany(MedecinClinique)
-MedecinClinique.belongsTo(Clinique)
+Clinique.hasMany(AgentClinique)
+AgentClinique.belongsTo(Clinique)
 
+Labo.hasMany(AgentLabo)
+AgentLabo.belongsTo(Labo)
+
+Pharmacy.hasMany(AgentPharma)
+AgentPharma.belongsTo(Pharmacy)
+
+CliniqueLabo.hasMany(AgentCliniqueLabo)
+AgentCliniqueLabo.belongsTo(CliniqueLabo)
 
 
 /** relation police-maladie */
-PoliceAssurance.belongsToMany(Maladie,{through:PoliceMaladie }) ;
-Maladie.belongsToMany(PoliceAssurance,{through:PoliceMaladie}) ;
+Police.belongsToMany(Maladie,{through:PoliceMaladie }) ;
+Maladie.belongsToMany(Police,{through:PoliceMaladie}) ;
 
 /** relation police-maladie */
-PoliceAssurance.belongsToMany(OperationMedical,{through:policeOps }) ;
-OperationMedical.belongsToMany(PoliceAssurance,{through:policeOps}) ;
+Police.belongsToMany(OperationMedical,{through:policeOps }) ;
+OperationMedical.belongsToMany(Police,{through:policeOps}) ;
 
 
-/** relation  categorie-police on-to-many */
-Categorie.hasMany(PoliceAssurance);
-PoliceAssurance.belongsTo(Categorie)
+/** relation  categorie-police on-to-many 
+Categorie.hasMany(Police);
+Police.belongsTo(Categorie)*/
 
+
+/** presciption */
+// Relations Assure -> Prescription
+Assure.hasMany(Prescription, { foreignKey: 'idAssure' });
+Prescription.belongsTo(Assure, { foreignKey: 'idAssure' });
+
+// Relations AgentClinique -> Prescription
+AgentClinique.hasMany(Prescription, { foreignKey: 'idAgentClinique' });
+Prescription.belongsTo(AgentClinique, { foreignKey: 'idAgentClinique' });
+
+// Relations AgentAssurance (Medecin) -> Prescription
+AgentAssurance.hasMany(Prescription, { as: 'MedecinAssurance', foreignKey: 'idMedecinAssurance' });
+Prescription.belongsTo(AgentAssurance, { as: 'MedecinAssurance', foreignKey: 'idMedecinAssurance' });
+
+// Relations AgentAssurance (Validation) -> Prescription
+AgentAssurance.hasMany(Prescription, { as: 'AgentAssurance', foreignKey: 'idAgentAssurance' });
+Prescription.belongsTo(AgentAssurance, { as: 'AgentAssurance', foreignKey: 'idAgentAssurance' });
 
 appSequelize.sync({alter:true}).then(_=>console.log("sync succes"))
                                 .catch((e)=>{
@@ -115,22 +175,41 @@ appSequelize.sync({alter:true}).then(_=>console.log("sync succes"))
 
 module.exports ={
 appSequelize,
-Assurance,
-Assure,
-AgentAssurance,
-Clinique,
-AgentClinique,
-Labo,
-Pharmacy,
-MedecinClinique,
-Maladie,
-PoliceAssurance,
+MedecinConseille,
+
 PoliceMaladie,
-Approbation,
+Prescription,
 Reclammation,
+
+OperationMedical,
+
+RfidIdentify,
+/** assurance elements */
+Assurance,
+Maladie,
 Offre,
 Categorie,
+Police,
+
+/** structure */
 Structure,
-OperationMedical,
-Partenaire
+
+/**assure */
+Assure,
+
+
+/** partenaires */
+Partenaire,
+Clinique,
+Labo,
+Pharmacy,
+CliniqueLabo ,
+
+/** agent */
+AgentAssurance,
+AgentPharma,
+AgentClinique,
+AgentCliniqueLabo,
+AgentLabo,
+
 }                             

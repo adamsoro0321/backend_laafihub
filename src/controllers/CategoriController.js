@@ -1,4 +1,4 @@
-const {Categori}=require('../sequelize');
+const {Categorie,Police}=require('../sequelize');
 const bcrypt=require('bcrypt');
 const jwt =require('jsonwebtoken') ;
 
@@ -6,7 +6,11 @@ const jwt =require('jsonwebtoken') ;
 
 const getAllCategori =async (req,res)=>{
       try {
-        const data = await Categori.findAll() ;
+        const data = await Categorie.findAll({
+                include: [
+                    { model: Police }               
+                ]         
+        }) ;
         res.json({message:'succes ',data}) ;
       } catch (error) {
         console.error(error);
@@ -17,11 +21,15 @@ const getAllCategori =async (req,res)=>{
 const getCategoriById =async (req,res)=>{
     try {
         const id =req.params.id ;
-       const data= await Categori.findByPk(id) ;
+       const data= await Categorie.findByPk(id,{
+        include: [
+            { model: Police }               
+        ]         
+}) ;
     if (data) {
         res.json({message:'succes',data}) ;
          }else{
-        res.status(404).json({error:'Categori not found'}) ;
+        res.status(404).json({error:'Categorie not found'}) ;
       }
     } catch (error) {
         console.error(error);
@@ -33,7 +41,7 @@ const createCategori =async (req,res)=>{
     try {
         
         const form_res=req.body ;
-        const data =await Categori.create(form_res);
+        const data =await Categorie.create(form_res);
         res.status(201).json({ message:'succes create  Article',data}) ;
     } catch (error) {
         console.error(error);
@@ -45,7 +53,7 @@ const updatCategori =async (req, res)=>{
     try {
         const id =req.params.id ;
        
-        const _Categori =await Categori.findByPk(id);
+        const _Categori =await Categorie.findByPk(id);
       //  console.log('updater' ,id ,_Categori)
         if (_Categori) {
             const data =req.body ;
@@ -53,7 +61,7 @@ const updatCategori =async (req, res)=>{
             await _Categori.update(req.body) ;
             res.status(202).json(_Categori)
         } else {
-            res.status(404).json({ error: 'Categori not found' });
+            res.status(404).json({ error: 'Categorie not found' });
         }
     } catch (error) {
         res.status(500).json({ error: 'Something went wrong' });
@@ -63,12 +71,12 @@ const updatCategori =async (req, res)=>{
 const deleteCategori=async (req,res)=>{
     try {
         const id =req.params.id ;
-        const _Categori =Categori.findByPk(id);
+        const _Categori =Categorie.findByPk(id);
         if (_Categori) {
             await _Categori.destroy() ;
             res.status(200).json({message:'succes deleting'});
         } else {
-            res.status(404).json({error:'Categori not found'});
+            res.status(404).json({error:'Categorie not found'});
         }
     } catch (error) {
         console.error(error);

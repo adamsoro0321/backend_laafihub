@@ -1,39 +1,24 @@
-/*require('dotenv').config()
-console.log(process.env.PORT) // remove this after you've confirmed it is working*/
-/*const  { AdminAssurance,Assurance }  =require('./src/sequelize')                  
+const { Kafka } = require('kafkajs')
 
-const { data } = require('./src/data/data');
+// Create the client with the broker list
+const kafka = new Kafka({
+  clientId: 'my-app',
+  brokers: ['kafka1:9092', 'kafka2:9092']
+})
 
-data.admin_assurance.map((assurance)=>{AdminAssurance.create(assurance) })*/
 
-/*const bcrypt =require('bcrypt') ;
-const pwd="123456"
+const product=async()=>{
+     const producer = kafka.producer()
 
- const crypt=(plainText,salt)=> {
-      bcrypt.hash(plainText,salt,(err,hash)=>{
-          console.log(`hash =>${hash} `)
-     }) ;
+     await producer.connect()
+     await producer.send({
+       topic: 'test-topic',
+       messages: [
+         { value: 'Hello KafkaJS user!' },
+       ],
+     })
+     
+     await producer.disconnect()
 }
 
-const hash =crypt(pwd,10)
-
-const verify =(plainText,hash)=>{
-      bcrypt.compare(plainText,hash,(err,result)=>{
-             console.log(`result => ${result} `)
-      })
-}
-
-//verify(pwd,'$2b$05$nc9F69WcsnT3QDitbGMWUuCleGmkzKljLruu.s9qT/txCG/rg3dFq')
-*/
-const jwt =require('jsonwebtoken'); 
-const private_key=require('./src/auth/private_key')
-
-const token =jwt.sign(
-     {userId:'email1@example.com'},
-     private_key,
-     {expiresIn:'24h'}
-
-)
-
-
-console.log(`token ${token} `)
+product()

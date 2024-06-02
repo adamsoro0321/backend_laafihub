@@ -29,7 +29,7 @@ const createOperationMedical =async (req,res)=>{
     try {
         const form_res=req.body ;
         const data =await OperationMedical.create(form_res);
-        res.status(201).json({ message:'succes create  Article',data}) ;
+        res.status(201).json({ message:'succes create operation medicale',data}) ;
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
@@ -41,7 +41,7 @@ const updatOperationMedical =async (req, res)=>{
         const id =req.params.id ;
        
         const _OperationMedical =await OperationMedical.findByPk(id);
-      //  console.log('updater' ,id ,_OperationMedical)
+      //  console.log('updater' ,id ,_OperationMedical)52583430
         if (_OperationMedical) {
             const data =req.body ;
            /// console.log("body data",data) ;

@@ -1,9 +1,18 @@
 const {Assure}=require('../sequelize');
 const bcrypt = require('bcrypt');
-
+const {Police,Structure } = require('../sequelize');
 const getAllAssure =async (req,res)=>{
       try {
-        const data = await Assure.findAll() ;
+        const data = await Assure.findAll(
+            {
+                include: [
+                    { model: Structure },
+                    { model:Police 
+                      
+                    },
+                ]
+            }
+        ) ;
         res.json({message:'succes ',data}) ;
       } catch (error) {
         console.error(error);
@@ -14,7 +23,14 @@ const getAllAssure =async (req,res)=>{
 const getAssureById =async (req,res)=>{
     try {
         const id =req.params.id ;
-       const data= await Assure.findByPk(id) ;
+       const data= await Assure.findByPk(id,
+        {
+            include: [
+                { model: Structure },
+                { model: Police },
+            ]
+        }
+       ) ;
     if (data) {
         res.json({message:'succes',data}) ;
          }else{
@@ -31,8 +47,22 @@ const getAssureById =async (req,res)=>{
 const createAssure = async (req, res) => {
     try {
         // Extraction du mot de passe de la requête
-        const { password } = req.body;
-
+        const { email, tel, password: inputPassword } = req.body;
+         // Vérification si l'email est déjà utilisé
+         const emailExists = await Assure.findOne({ where: { email } });
+         if (emailExists) {
+             return res.status(400).json({ error: 'L\'email est déjà utilisé' });
+         }
+ 
+         // Vérification si le numéro de téléphone est déjà utilisé
+         const telExists = await Assure.findOne({ where: { tel } });
+         if (telExists) {
+             return res.status(400).json({ error: 'Le numéro de téléphone est déjà utilisé' });
+         }
+ 
+         // Si aucun mot de passe n'est fourni, définir un mot de passe par défaut
+         const password = inputPassword || '12345678';
+ 
         // Hash du mot de passe
         const hashedPassword = await bcrypt.hash(password, 10); // Utilisation de 10 rounds de salage
 
@@ -42,7 +72,7 @@ const createAssure = async (req, res) => {
             password: hashedPassword,
         });
 
-        res.status(201).json({ message: 'Assuré créé avec succès', assure });
+        res.status(201).json({ message: 'Assuré créé avec succès' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Erreur lors de la création de l\'assuré' });

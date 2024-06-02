@@ -259,106 +259,153 @@ const assurances =[
 
 const agentsAssurance = [
     {
-        idAgentAssurance: 1,
-        idAssurance: 1,
-        password: "motdepasse1",
-        image: "url_de_l_image_1",
-        email: "agent1@example.com",
-        nom: "Smith",
-        prenom: "John",
-        type: "agent"
+        nom: "Dupont",
+        prenom: "Jean",
+        tel: "0123456789",
+        email: "jean.dupont@example.com",
+        type: "agent",
+        image: "/chemin/vers/image1.jpg",
+        password: "password123",
+        isMailValid: true,
+        emailValideDate: "2024-04-16"
     },
     {
-        idAgentAssurance: 2,
-        idAssurance: 1,
-        password: "motdepasse2",
-        image: "url_de_l_image_2",
-        email: "agent2@example.com",
-        nom: "Doe",
-        prenom: "Jane",
-        type: "agent"
+        nom: "Martin",
+        prenom: "Marie",
+        tel: "0987654321",
+        email: "marie.martin@example.com",
+        type: "agent",
+        image: "/chemin/vers/image2.jpg",
+        password: "password456",
+        isMailValid: false,
+        emailValideDate: null
     },
     {
-        idAgentAssurance: 3,
-        idAssurance: 2,
-        password: "motdepasse3",
-        image: "url_de_l_image_3",
-        email: "agent3@example.com",
-        nom: "Johnson",
-        prenom: "Robert",
-        type: "agent"
+        nom: "Dubois",
+        prenom: "Pierre",
+        tel: "0365987412",
+        email: "pierre.dubois@example.com",
+        type: "agent",
+        image: "/chemin/vers/image3.jpg",
+        password: "password789",
+        isMailValid: true,
+        emailValideDate: "2024-04-15"
     },
     {
-        idAgentAssurance: 4,
-        idAssurance: 2,
-        password: "motdepasse4",
-        image: "url_de_l_image_4",
-        email: "agent4@example.com",
-        nom: "Brown",
-        prenom: "Linda",
-        type: "agent"
+        nom: "Lambert",
+        prenom: "Sophie",
+        tel: "0654321897",
+        email: "sophie.lambert@example.com",
+        type: "agent",
+        image: "/chemin/vers/image4.jpg",
+        password: "password321",
+        isMailValid: false,
+        emailValideDate: null
     },
     {
-        idAgentAssurance: 5,
-        idAssurance: 3,
-        password: "motdepasse5",
-        image: "url_de_l_image_5",
-        email: "agent5@example.com",
-        nom: "Wilson",
-        prenom: "Michael",
-        type: "agent"
+        nom: "Leroy",
+        prenom: "Anne",
+        tel: "0215487936",
+        email: "anne.leroy@example.com",
+        type: "agent",
+        image: "/chemin/vers/image5.jpg",
+        password: "password654",
+        isMailValid: true,
+        emailValideDate: "2024-04-14"
     },
     {
-        idAgentAssurance: 6,
-        idAssurance: 3,
-        password: "motdepasse6",
-        image: "url_de_l_image_6",
-        email: "agent6@example.com",
-        nom: "Taylor",
-        prenom: "Sarah",
-        type: "agent"
+        nom: "Moreau",
+        prenom: "Paul",
+        tel: "0789654123",
+        email: "paul.moreau@example.com",
+        type: "agent",
+        image: "/chemin/vers/image6.jpg",
+        password: "password987",
+        isMailValid: false,
+        emailValideDate: null
     },
     {
-        idAgentAssurance: 7,
-        idAssurance: 4,
-        password: "motdepasse7",
-        image: "url_de_l_image_7",
-        email: "agent7@example.com",
-        nom: "Anderson",
-        prenom: "James",
-        type: "agent"
+        nom: "Lefebvre",
+        prenom: "Isabelle",
+        tel: "0321457896",
+        email: "isabelle.lefebvre@example.com",
+        type: "agent",
+        image: "/chemin/vers/image7.jpg",
+        password: "password123",
+        isMailValid: true,
+        emailValideDate: "2024-04-13"
     },
     {
-        idAgentAssurance: 8,
-        idAssurance: 4,
-        password: "motdepasse8",
-        image: "url_de_l_image_8",
-        email: "agent8@example.com",
-        nom: "Martinez",
-        prenom: "Jennifer",
-        type: "agent"
+        nom: "Laurent",
+        prenom: "Thomas",
+        tel: "0978563412",
+        email: "thomas.laurent@example.com",
+        type: "agent",
+        image: "/chemin/vers/image8.jpg",
+        password: "password456",
+        isMailValid: false,
+        emailValideDate: null
     },
     {
-        idAgentAssurance: 9,
-        idAssurance: 5,
-        password: "motdepasse9",
-        image: "url_de_l_image_9",
-        email: "agent9@example.com",
-        nom: "Harris",
-        prenom: "David",
-        type: "agent"
+        nom: "Garcia",
+        prenom: "Camille",
+        tel: "0547896312",
+        email: "camille.garcia@example.com",
+        type: "agent",
+        image: "/chemin/vers/image9.jpg",
+        password: "password789",
+        isMailValid: true,
+        emailValideDate: "2024-04-12"
     },
     {
-        idAgentAssurance: 10,
-        idAssurance: 5,
-        password: "motdepasse10",
-        image: "url_de_l_image_10",
-        email: "agent10@example.com",
-        nom: "Clark",
-        prenom: "Lisa",
-        type: "agent"
+        nom: "Bonnet",
+        prenom: "Lucas",
+        tel: "0612345789",
+        email: "lucas.bonnet@example.com",
+        type: "agent",
+        image: "/chemin/vers/image10.jpg",
+        password: "password321",
+        isMailValid: false,
+        emailValideDate: null
     }
 ];
+
+const assures = [
+    {
+        rfid: 'RFID001',
+        nom: 'Dupont',
+        prenom: 'Jean',
+        tel: '0612345678',
+        adresse: '1 rue de Paris',
+        email: 'jean.dupont@example.com',
+        matricule: 'MAT001',
+        password: 'password123',
+        cni: '1234567890',
+        date_naissance: new Date(1985, 5, 15),
+        idCategorie: 1,
+        matricule_resp: 'RESP001',
+        idStructure: 1
+    },
+    {
+        rfid: 'RFID002',
+        nom: 'Martin',
+        prenom: 'Sophie',
+        tel: '0623456789',
+        adresse: '2 avenue des Champs',
+        email: 'sophie.martin@example.com',
+        matricule: 'MAT002',
+        password: 'pass123',
+        cni: '2345678901',
+        date_naissance: new Date(1990, 8, 25),
+        idCategorie: 2,
+        matricule_resp: 'RESP002',
+        idStructure: 2
+    },
+    // Ajoutez d'autres objets Assure ici selon vos besoins
+];
+
+module.exports = assures;
+
 
 
 module.exports.data ={

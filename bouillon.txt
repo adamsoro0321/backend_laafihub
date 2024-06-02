@@ -1,0 +1,37 @@
+/**9.0  LaboControllers  
+app.get('/api/v1/labo', (req,res)=> LaboControllers.getAllLabo(req,res));
+app.get('/api/v1/labo/:id',(req,res)=>LaboControllers.getLaboById(req, res));
+app.put('/api/v1/labo/:id',(req,res)=>LaboControllers.updateLabo(req,res));
+app.post('/api/v1/labo',(req,res)=>LaboControllers.createLabo(req,res));
+app.delete('/api/v1/labo/:id',(req,res)=>LaboControllers.deleteLabo(req,res)) ;
+7.0 Pharmacy endpoint
+
+app.get('/api/v1/pharmacy', (req,res)=>PharmacyControllers.getAllPharmacy(req,res));
+app.get('/api/v1/pharmacy/:id',(req,res)=>PharmacyControllers.getPharmacyById(req, res));
+app.put('/api/v1/pharmacy/:id',(req,res)=>PharmacyControllers.updatPharmacy(req,res));
+app.post('/api/v1/pharmacy',(req,res)=>PharmacyControllers.createPharmacy(req,res));
+app.delete('/api/v1/pharmacy/:id',(req,res)=>PharmacyControllers.deletePharmacypharmacy(req,res)) ;
+*/
+
+/**12.0 AdminClinique */ 
+app.get('/api/v1/adminclinique', (req,res)=> AdminCliniqueControllers.getAllAdminClinique(req,res));
+app.get('/api/v1/adminclinique/:id',(req,res)=>AdminCliniqueControllers.getAdminCliniqueById(req, res));
+app.put('/api/v1/adminclinique/:id',(req,res)=>AdminCliniqueControllers.updateAdminClinique(req,res));
+app.post('/api/v1/adminclinique',(req,res)=>AdminCliniqueControllers.createAdminClinique(req,res));
+app.delete('/api/v1/adminclinique/:id',(req,res)=>AdminCliniqueControllers.deleteAdminClinique(req,res)) ;
+
+
+/**13.0 adminassurance*/
+app.get('/api/v1/adminassurance', (req,res)=> AdminAssuranceControllers.getAllAdminAssurance(req,res));
+app.get('/api/v1/adminassurance/:id',(req,res)=>AdminAssuranceControllers.getAdminAssuranceById(req, res));
+app.put('/api/v1/adminassurance/:id',(req,res)=>AdminAssuranceControllers.updatAdminAssurance(req,res));
+app.post('/api/v1/adminassurance',(req,res)=>AdminAssuranceControllers.createAdminAssurance(req,res));
+app.delete('/api/v1/adminassurance/:id',(req,res)=>AdminAssuranceControllers.deleteAdminAssurance(req,res)) ;
+
+
+ /**3.0 assurance endpoint */
+ app.get('/api/v1/assurances',(req,res,next)=>auth(req,res,next),(req,res)=> AssuranceControllers.getAllAssurance(req,res));
+ app.get('/api/v1/assurance/:id',(req,res,next)=>auth(req,res,next),(req,res)=>AssuranceControllers.getAssuranceById(req, res));
+ app.put('/api/v1/assurance/:id',(req,res,next)=>auth(req,res,next),(req,res)=>AssuranceControllers.updatAssurance(req,res));
+ app.post('/api/v1/assurance',(req,res,next)=>auth(req,res,next),(req,res)=>AssuranceControllers.createAssurance(req,res));
+ app.delete('/api/v1/assurance/:id',(req,res,next)=>auth(req,res,next),(req,res)=>AssuranceControllers.deleteAssurance(req,res)) ;

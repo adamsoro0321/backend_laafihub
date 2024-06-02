@@ -1,9 +1,4 @@
-const {Structure}=require('../sequelize');
-const bcrypt=require('bcrypt');
-const jwt =require('jsonwebtoken') ;
-
-
-
+const {Structure,Assure}=require('../sequelize');
 const getAllStructure =async (req,res)=>{
       try {
         const data = await Structure.findAll() ;
@@ -26,6 +21,32 @@ const getStructureById =async (req,res)=>{
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
+    }
+}
+const getMatriculeById=async (req,res)=>{
+    try {
+        const { structureId } = req.params;
+
+        // Trouver la structure par ID
+        const structure = await Structure.findByPk(structureId);
+
+        if (!structure) {
+            return res.status(404).json({ error: 'Structure non trouvée' });
+        }
+
+        const codeStructure = structure.code;
+
+        // Trouver le nombre d'assurés dans cette structure
+        const assureCount = await Assure.count({ where: { idStructure: structureId } });
+        // Générer un random de 3 chiffres
+        const randomDigits = Math.floor(100 + Math.random() * 900);
+        // Générer le matricule suggéré
+        const suggestedMatricule = `${codeStructure}-${assureCount + 1}${randomDigits}`; // +1 pour le prochain assuré
+
+        res.json({ suggestedMatricule });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Erreur lors de la suggestion du matricule' });
     }
 }
 
@@ -68,7 +89,7 @@ const updatStructure =async (req, res)=>{
 const deleteStructure=async(req,res)=>{
     try {
         const id =req.params.id ;
-        const _Structure =Structure.findByPk(id);
+        const _Structure =await Structure.findByPk(id);
         if (_Structure) {
             await _Structure.destroy() ;
             res.status(200).json({message:'succes deleting'});
@@ -81,10 +102,29 @@ const deleteStructure=async(req,res)=>{
     }
 }
 
+const getStructureCode=async (req,res)=>{
+
+    try {
+        // Trouver le nombre de police
+        const policeCount = await Structure.count();
+        // Générer un random de 3 chiffres
+        const randomDigits = Math.floor(100 + Math.random() * 900);
+        // Générer le matricule suggéré
+        const code = `${policeCount + 1}${randomDigits}`; // +1 pour le prochain assuré
+
+        res.json({ code });
+ } catch (error) {
+     console.error(error);
+     res.status(500).json({ error: 'Erreur lors de la suggestion du numero' });
+ }
+}
+
 module.exports.StructureControllers={
     getAllStructure,
     getStructureById,
     createStructure,
     updatStructure,
-    deleteStructure
+    deleteStructure, 
+    getMatriculeById,
+    getStructureCode
 }

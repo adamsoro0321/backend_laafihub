@@ -19,6 +19,9 @@ module.exports.AssuranceModel=(sequelize,DataTypes)=>{
                     msg:'Ce numero est deja utiliser'
                  } },
             siege:DataTypes.STRING,
+            image:{
+               type:DataTypes.STRING,
+            }
             
          },
          {}
