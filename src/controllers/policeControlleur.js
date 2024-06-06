@@ -1,4 +1,4 @@
-const {Police}=require('../sequelize');
+const {Police,PoliceMaladie,policeOps}=require('../sequelize');
 
 const getAllPolice =async (req,res)=>{
       try {
@@ -41,9 +41,27 @@ const getPoliceById =async (req,res)=>{
 
 const createPolice =async (req,res)=>{
     try {
-        const form_res=req.body ;
-        const data =await Police.create(form_res);
-        res.status(201).json({ message:'succes create  Article',data}) ;
+       
+        const { maladies, operations, ...police } = req.body;
+        /** saving police */
+        const data =await Police.create(police);
+        const policeId = data.id;
+
+        // Sauvegarder les relations maladies-police
+        if (maladies) {
+            for (const maladieId of maladies) {
+                await PoliceMaladie.create({ PolouseId:policeId, maladieId });
+            }
+        }
+        if (operations) {
+            for (const operationId of operations) {
+                await policeOps.create({ PolouseId:policeId, operationMedicalId:operationId });
+            }
+        }
+
+        // Sauvegarder les relations opérations-police
+      
+        res.status(201).json({ message:'succes create  police',data}) ;
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });

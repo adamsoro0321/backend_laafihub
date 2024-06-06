@@ -8,9 +8,7 @@ module.exports.PoliceModel = (sequelize, DataTypes) => {
         numero:{
             type:DataTypes.STRING,
             allawNull:false,
-            unique:{
-                msg:'Le code est deja utiliser'
-                     }
+            unique: true,
         },
         libelle: DataTypes.STRING,
         description:DataTypes.TEXT ,

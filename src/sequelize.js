@@ -41,7 +41,7 @@ const RfidIdentify=RfidIdentifyModel(appSequelize,DataTypes);
 
 const Police =PoliceModel(appSequelize,DataTypes)
 const Categorie=CategorieModel(appSequelize,DataTypes,Police);
-const offreCategorie =OffreCategorieModel(appSequelize,DataTypes,Offre,Categorie) ;
+
 
 const Assurance =AssuranceModel(appSequelize,DataTypes)
 const Assure =AssureModel(appSequelize,DataTypes,Police,Structure)
@@ -96,8 +96,10 @@ Reclammation.belongsTo(AgentAssurance);
 AgentAssurance.hasMany(Reclammation);
 
 /** policeassurance-maladi */
-Police.belongsToMany(Maladie,{through: PoliceMaladie   })
-Maladie.belongsToMany(Police,{through:PoliceMaladie })
+Police.belongsToMany(Maladie,{through: PoliceMaladie   }) ;
+Maladie.belongsToMany(Police,{through:PoliceMaladie }) ;
+
+/** police operation */
 
 /** offre -categori assurance 
 
@@ -190,6 +192,7 @@ Maladie,
 Offre,
 Categorie,
 Police,
+policeOps,
 
 /** structure */
 Structure,

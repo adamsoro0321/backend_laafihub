@@ -19,7 +19,9 @@ module.exports.AgentAssuranceModel = (sequelize, DataTypes,type='agent') => {
             allowNull:false
         },
         prenom:{type: DataTypes.STRING,
-                allowNull:false },
+                allowNull:false 
+            },
+
         tel: {type:DataTypes.STRING,
             unique:{
              msg:'Le numero est deja utiliser'
