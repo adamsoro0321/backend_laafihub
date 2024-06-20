@@ -51,6 +51,9 @@ module.exports.AssureModel = (Sequelize, DataTypes, Police, Structure) => {
             type: DataTypes.STRING,
             allowNull: false,
         },
+      /*  image:{
+            type: DataTypes.STRING,
+        },*/
         cni: {
             type: DataTypes.STRING,
             unique: {

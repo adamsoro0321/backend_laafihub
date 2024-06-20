@@ -30,6 +30,7 @@ const { AgentPharmacyceModel } = require('./models/agentPharmacy');
 const { AgentCliniqueLaboModel } = require('./models/agentCliniqueLabo');
 const { AgentLaboModel } = require('./models/agentlabo')
 const { PrescriptionModel } = require('./models/Prescription')
+const { ProduidMedicalModel } = require('./models/produitsMedical')
 
 
 module.exports={
@@ -56,5 +57,6 @@ PartenaireModel,
 RfidIdentifyModel,
 AgentCliniqueLaboModel,
 AgentLaboModel,
-AgentPharmacyceModel
+AgentPharmacyceModel,
+ProduidMedicalModel
 }

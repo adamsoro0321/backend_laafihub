@@ -1,4 +1,4 @@
-const {Police,PoliceMaladie,policeOps}=require('../sequelize');
+const {Police,Maladie,OperationMedical,PoliceMaladie,policeOps}=require('../sequelize');
 
 const getAllPolice =async (req,res)=>{
       try {
@@ -103,12 +103,51 @@ const deletePolice=async (req,res)=>{
     }
 }
 
+
+
+const getMaladiesOperation = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Fetch the police with its associated maladies and operations medicales
+        const police = await Police.findOne({
+            where: { id },
+            include: [
+                {
+                    model: Maladie,
+                    through: { attributes: [] }, // exclude the join table attributes
+                },
+                {
+                    model: OperationMedical,
+                    through: { attributes: [] }, // exclude the join table attributes
+                },
+            ],
+        });
+
+        if (!police) {
+            return res.status(404).json({ error: 'Police not found' });
+        }
+
+       // const {maladies,operation_medicals,...police} = data;
+        
+
+        res.json({ message: 'success', police});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+};
+
+module.exports = { getMaladiesOperation };
+
+
 module.exports.PoliceControllers={
     getAllPolice,
     getPoliceById,
     createPolice,
     updatePolice,
     deletePolice,
-    getNumber
+    getNumber,
+    getMaladiesOperation
 }
 // re

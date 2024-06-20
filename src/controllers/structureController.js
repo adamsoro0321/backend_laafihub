@@ -118,6 +118,26 @@ const getStructureCode=async (req,res)=>{
      res.status(500).json({ error: 'Erreur lors de la suggestion du numero' });
  }
 }
+const getDetail =async (req,res)=>{
+    try {
+        const id =req.params.id ;
+       const data= await Structure.findOne({
+                        where: { id },
+                        include:[
+                             {
+                                model: Assure,
+                             },
+                        ]
+       }) ;
+    if (!data) {
+        res.status(404).json({error:'Structure not found'}) ;
+      }
+      res.status(200).json({message:'succes',data}) ;
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+}
 
 module.exports.StructureControllers={
     getAllStructure,
@@ -126,5 +146,6 @@ module.exports.StructureControllers={
     updatStructure,
     deleteStructure, 
     getMatriculeById,
-    getStructureCode
+    getStructureCode,
+    getDetail
 }

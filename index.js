@@ -25,6 +25,7 @@ const auth = require('./src/auth/auth');
 const { where } = require('sequelize');
 const { kafka } = require('./src/kafka/kafka');
 const { reset } = require('nodemon');
+const { produitMedicalControllers } = require('./src/controllers/ProduidMedicalController');
 
 
 
@@ -61,6 +62,7 @@ app.delete('/api/v1/medecinconseille/:id',(req,res)=>MedecinConseilleControllers
  app.put('/api/v1/assure/:id',(req,res)=>AssureControllers.updatAssure(req,res));
  app.post('/api/v1/assure',(req,res)=>AssureControllers.createAssure(req,res));
  app.delete('/api/v1/assure/:id',(req,res)=>AssureControllers.deleteAssure(req,res))
+ app.get('/api/v1/assure/prescriptions/:id',(req,res)=>AssureControllers.getPrescription(req, res));
 
 
 /**4.0 partenaire endpoint  */
@@ -85,7 +87,7 @@ app.delete('/api/v1/medecinclinique/:id',(req,res)=>MedecinCliniqueControllers.d
 app.get('/api/v1/polices', (req,res)=> PoliceControllers.getAllPolice(req,res));
 app.get('/api/v1/police/:id',(req,res)=> PoliceControllers.getPoliceById(req, res));
 app.get('/api/v1/police-number', (req,res)=>PoliceControllers.getNumber(req,res));
-
+app.get('/api/v1/police/:id/details', (req,res)=>PoliceControllers.getMaladiesOperation(req,res));
 app.put('/api/v1/police/:id',(req,res)=> PoliceControllers.updatePolice(req,res));
 app.post('/api/v1/police',(req,res)=>  PoliceControllers.createPolice(req,res));
 app.delete('/api/v1/police/:id',(req,res)=>  PoliceControllers.deletePolice(req,res)) ;
@@ -150,7 +152,7 @@ app.put('/api/v1/structure/:id',(req,res)=>StructureControllers.updatStructure(r
 app.post('/api/v1/structure',(req,res)=>StructureControllers.createStructure(req,res));
 app.delete('/api/v1/structure/:id',(req,res)=>StructureControllers.deleteStructure(req,res)) ;
 app.get('/api/v1/stucture_code',(req,res)=>StructureControllers.getStructureCode(req, res));
-
+app.get('/api/v1/structure/:id/details', (req,res)=>StructureControllers.getDetail(req,res) );
 
 /**20.0 offre endpoint */
 app.get('/api/v1/offres', (req,res)=>StructureControllers.getAllStructure(req,res) );
@@ -165,6 +167,14 @@ app.get('/api/v1/categorie/:id',(req,res)=>CategoriControllers.getCategoriById(r
 app.put('/api/v1/categorie/:id',(req,res)=>CategoriControllers.updatCategori(req,res));
 app.post('/api/v1/categorie',(req,res)=>CategoriControllers.createCategori(req,res));
 app.delete('/api/v1/categorie/:id',(req,res)=>CategoriControllers.deleteCategori(req,res)) ;
+
+/** produit Medical */
+app.get('/api/v1/produit_medicals', (req,res)=>produitMedicalControllers.getAllproduitMedical(req,res) );
+app.get('/api/v1/produit_medical/:id',(req,res)=>produitMedicalControllers.getproduitMedicalById(req,res));
+app.put('/api/v1/produit_medical/:id',(req,res)=>produitMedicalControllers.updatproduitMedical(req,res));
+app.post('/api/v1/produit_medical',(req,res)=>produitMedicalControllers.createproduitMedical(req,res));
+app.delete('/api/v1/produit_medical/:id',(req,res)=>produitMedicalControllers.deleteproduitMedical(req,res)) ;
+
 /** upload image with multer */
 
 app.post('/api/v1/image', AppMulter.single('file'),(req,res)=>{

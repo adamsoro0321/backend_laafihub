@@ -1,7 +1,7 @@
 const app = require("./index");
 require('dotenv').config()
 
-const port =5000 ;//process.env.PORT ;
+const port =process.env.PORT || 5000 ;
 
 
 

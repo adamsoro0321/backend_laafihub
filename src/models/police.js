@@ -20,13 +20,8 @@ module.exports.PoliceModel = (sequelize, DataTypes) => {
         },
         dureeValidite: {
             type: DataTypes.INTEGER, // Peut être exprimée en jours, mois, années, etc.
-        }  ,
-        maladie: {
-            type: DataTypes.ARRAY(DataTypes.STRING), // Liste des maladies couvertes par la police
-        },
-        operations_medicales: {
-            type: DataTypes.ARRAY(DataTypes.STRING), // Liste des opérations médicales couvertes par la police
-        } 
+        }  
+      
 
     });
 

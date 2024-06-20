@@ -1,4 +1,4 @@
-module.exports.PoliceMaladieModel =(Sequelize,DataTypes,police,maladie)=>{
+module.exports.PoliceMaladieModel =(Sequelize)=>{
     return Sequelize.define('policeMaladie',{
     },{})
 }

@@ -9,7 +9,8 @@ const {
   ReclammationModel, CategorieModel, StructureModel, OffreModel,
   OffreCategorieModel, OperationMedicalModel, PoliceOperationMedicalModel,
   PartenaireModel,RfidIdentifyModel,AgentCliniqueLaboModel,AgentLaboModel,AgentPharmacyceModel,
-  PrescriptionModel
+  PrescriptionModel,
+  ProduidMedicalModel
 } =require('./models');
 
 
@@ -61,14 +62,15 @@ const AgentCliniqueLabo =AgentCliniqueLaboModel(appSequelize,DataTypes,CliniqueL
 const MedecinConseille=AgentAssuranceModel(appSequelize,DataTypes,'medecin')
 
 
-const PoliceMaladie = PoliceMaladieModel(appSequelize,DataTypes,Police, Maladie);
+const PoliceMaladie = PoliceMaladieModel(appSequelize);
 const Prescription = PrescriptionModel(appSequelize,DataTypes, Assure,AgentClinique,AgentAssurance);
 
 const Reclammation = ReclammationModel(appSequelize,DataTypes,Assure,AgentAssurance) ;
 
-const policeOps= PoliceOperationMedicalModel(appSequelize,DataTypes,Police,OperationMedical)
+const policeOps= PoliceOperationMedicalModel(appSequelize)
 
 
+const produitMedical= ProduidMedicalModel(appSequelize,DataTypes);
 /** relation assurer- structure 1 à plusiers: un assurer fait partie d"au plus une structure */
  Structure.hasMany(Assure)
  Assure.belongsTo(Structure)
@@ -101,10 +103,7 @@ Maladie.belongsToMany(Police,{through:PoliceMaladie }) ;
 
 /** police operation */
 
-/** offre -categori assurance 
 
-Offre.belongsToMany(Categorie,{through:offreCategorie}) 
-Categorie.belongsToMany(Offre,{through:offreCategorie});*/ 
 
 /** Strucuterure police  */
 Structure.belongsToMany(Police,{through:'structure_police'}) ;
@@ -146,9 +145,7 @@ Police.belongsToMany(OperationMedical,{through:policeOps }) ;
 OperationMedical.belongsToMany(Police,{through:policeOps}) ;
 
 
-/** relation  categorie-police on-to-many 
-Categorie.hasMany(Police);
-Police.belongsTo(Categorie)*/
+
 
 
 /** presciption */
@@ -189,8 +186,8 @@ RfidIdentify,
 /** assurance elements */
 Assurance,
 Maladie,
-Offre,
-Categorie,
+
+
 Police,
 policeOps,
 
@@ -214,5 +211,6 @@ AgentPharma,
 AgentClinique,
 AgentCliniqueLabo,
 AgentLabo,
+produitMedical
 
 }                             

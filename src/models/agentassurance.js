@@ -23,9 +23,7 @@ module.exports.AgentAssuranceModel = (sequelize, DataTypes,type='agent') => {
             },
 
         tel: {type:DataTypes.STRING,
-            unique:{
-             msg:'Le numero est deja utiliser'
-                  }
+            unique:true
         },
         fullName:{
             type:DataTypes.VIRTUAL,
@@ -36,9 +34,7 @@ module.exports.AgentAssuranceModel = (sequelize, DataTypes,type='agent') => {
         email: {
             type:DataTypes.STRING,
                    allowNull:false ,
-                 unique:{
-                    msg:"Le email est déja utiliser"
-                 } ,
+                 unique:true,
             validate:{
                 isEmail: true, 
             }
@@ -53,7 +49,7 @@ module.exports.AgentAssuranceModel = (sequelize, DataTypes,type='agent') => {
         isMailValid: {
             type:DataTypes.BOOLEAN,
             defaultValue: false
-        }
+        } 
         ,
         emailValideDate:{
             type:DataTypes.DATE,

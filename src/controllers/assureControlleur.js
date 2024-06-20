@@ -1,4 +1,4 @@
-const {Assure}=require('../sequelize');
+const {Assure,Prescription}=require('../sequelize');
 const bcrypt = require('bcrypt');
 const {Police,Structure } = require('../sequelize');
 const getAllAssure =async (req,res)=>{
@@ -42,7 +42,24 @@ const getAssureById =async (req,res)=>{
     }
 }
 
-
+const getPrescription =async (req,res)=>{
+    try {
+        const id =req.params.id ;
+       const data= await Prescription.findAll({
+        where: {
+            idAssure: id,
+          },
+       }) ;
+    if (data) {
+        res.json({message:'succes',data}) ;
+         }else{
+        res.status(404).json({error:'Prescription not found'}) ;
+      }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+}
 
 const createAssure = async (req, res) => {
     try {
@@ -122,5 +139,6 @@ module.exports.AssureControllers={
     createAssure,
     updatAssure,
     deleteAssure,
+    getPrescription
 }
 // re

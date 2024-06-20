@@ -1,3 +1,6 @@
 =====1.tous les endpoint doive etre tester
 
 ====Auht doive etre gere
+
+heroku create 
+git push heroku master
