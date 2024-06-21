@@ -7,8 +7,9 @@ const {
   AgentCliniqueModel, AssureModel, 
   MaladieModel, PoliceMaladieModel, PoliceModel, 
   ReclammationModel, CategorieModel, StructureModel, OffreModel,
-  OffreCategorieModel, OperationMedicalModel, PoliceOperationMedicalModel,
-  PartenaireModel,RfidIdentifyModel,AgentCliniqueLaboModel,AgentLaboModel,AgentPharmacyceModel,
+  OperationMedicalModel, PoliceOperationMedicalModel,
+  PartenaireModel,RfidIdentifyModel,AgentCliniqueLaboModel,
+  AgentLaboModel,AgentPharmacyceModel,
   PrescriptionModel,
   ProduidMedicalModel
 } =require('./models');
@@ -120,11 +121,11 @@ Assure.belongsTo(Structure,{
   foreignKey: {
     name: 'idStructure',
   },
-})
-/** relation entre un medecinClinique et un clinique */
+});
 
-Clinique.hasMany(AgentClinique)
-AgentClinique.belongsTo(Clinique)
+/** relation entre un medecinClinique et un clinique */
+Clinique.hasMany(AgentClinique);
+AgentClinique.belongsTo(Clinique);
 
 Labo.hasMany(AgentLabo)
 AgentLabo.belongsTo(Labo)
@@ -143,9 +144,6 @@ Maladie.belongsToMany(Police,{through:PoliceMaladie}) ;
 /** relation police-maladie */
 Police.belongsToMany(OperationMedical,{through:policeOps }) ;
 OperationMedical.belongsToMany(Police,{through:policeOps}) ;
-
-
-
 
 
 /** presciption */
@@ -175,26 +173,20 @@ appSequelize.sync({alter:true}).then(_=>console.log("sync succes"))
 module.exports ={
 appSequelize,
 MedecinConseille,
-
 PoliceMaladie,
 Prescription,
 Reclammation,
-
 OperationMedical,
-
 RfidIdentify,
+
 /** assurance elements */
 Assurance,
 Maladie,
-
-
 Police,
 policeOps,
 
 /** structure */
 Structure,
-
-/**assure */
 Assure,
 
 
@@ -212,5 +204,4 @@ AgentClinique,
 AgentCliniqueLabo,
 AgentLabo,
 produitMedical
-
 }                             
