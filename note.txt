@@ -4,3 +4,5 @@
 
 heroku create 
 git push heroku master
+
+sup cache: heroku config:unset NODEMODULESCACHE
