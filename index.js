@@ -22,9 +22,8 @@ const { AssureControllers ,
 
 const AppMulter = require('./src/multer');
 const auth = require('./src/auth/auth');
-const { where } = require('sequelize');
+
 const { kafka } = require('./src/kafka/kafka');
-const { reset } = require('nodemon');
 const { produitMedicalControllers } = require('./src/controllers/ProduidMedicalController');
 
 

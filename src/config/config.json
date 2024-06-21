@@ -1,0 +1,27 @@
+{
+    "development": {
+      "username": "postgres",
+      "password": "123456",
+      "database": "laafisebe",
+      "host": "localhost",
+      "port": "5050",
+      "dialect": "postgres"
+    },
+    "test": {
+      "username": "postgres",
+      "password": "123456",
+      "database": "laafisebe",
+      "host": "localhost",
+      "port": "5050",
+      "dialect": "postgres"
+    },
+    "production": {
+      "username": "uf77pse47kvi3v",
+      "password": "pd3bcf4e787c6a9543d2619eb4958498a67dad0d40c67d48ea3b95150a1ce2aee",
+      "database": "d35m3fasn63jlm",
+      "host": "cd1goc44htrmfn.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com",
+      "port": "5432",
+      "dialect": "postgres"
+    }
+  }
+  

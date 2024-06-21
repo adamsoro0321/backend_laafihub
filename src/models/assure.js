@@ -7,9 +7,7 @@ module.exports.AssureModel = (Sequelize, DataTypes, Police, Structure) => {
         },
         rfid: {
             type: DataTypes.STRING,
-            unique: {
-                msg: 'Le numéro rfid est déjà utilisé'
-            }
+            unique: true
         },
         nom: {
             type: DataTypes.STRING,
@@ -21,9 +19,7 @@ module.exports.AssureModel = (Sequelize, DataTypes, Police, Structure) => {
         },
         tel: {
             type: DataTypes.STRING,
-            unique: {
-                msg: 'Le numéro de téléphone est déjà utilisé'
-            },
+            unique:true,
             validate: {
                 isNumeric: true,
             }
@@ -34,31 +30,25 @@ module.exports.AssureModel = (Sequelize, DataTypes, Police, Structure) => {
         },
         email: {
             type: DataTypes.STRING,
-            unique: {
-                msg: "L'email est déjà utilisé"
-            },
+            unique: true,
             validate: {
                 isEmail: true,
             }
         },
         matricule: {
             type: DataTypes.STRING,
-            unique: {
-                msg: "Le matricule est déjà utilisé"
-            }
+            unique: true
         },
         password: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-      /*  image:{
+        image:{
             type: DataTypes.STRING,
-        },*/
+        },
         cni: {
             type: DataTypes.STRING,
-            unique: {
-                msg: "Le numéro de CNI est déjà utilisé"
-            }
+            unique: true
         },
         date_naissance: {
             type: DataTypes.DATE
@@ -74,7 +64,7 @@ module.exports.AssureModel = (Sequelize, DataTypes, Police, Structure) => {
             type: DataTypes.STRING
         },
         idStructure: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             references: {
                 model: Structure,
                 key: 'id'

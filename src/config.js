@@ -1,26 +1,23 @@
-const DB =()=> {
-   
-    if (process.env.NODE_ENV === 'production') {
-        return {
-            password:'pd3bcf4e787c6a9543d2619eb4958498a67dad0d40c67d48ea3b95150a1ce2aee',
-            port:'5432',
-            host:'cd1goc44htrmfn.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
-            username:'uf77pse47kvi3v',
-            database:'d35m3fasn63jlm',
-            dialect:'postgres'
-        }
-    }
+const DB = process.env.NODE_ENV === 'production' ? {
+    password: process.env.PROD_DB_PASSWORD,
+    port: process.env.PROD_DB_PORT,
+    host: process.env.PROD_DB_HOST,
+    username: process.env.PROD_DB_USERNAME,
+    database: process.env.PROD_DB_DATABASE,
+    dialect: process.env.PROD_DB_DIALECT
+} : {
+    password: process.env.DEV_DB_PASSWORD,
+    port: process.env.DEV_DB_PORT,
+    host: process.env.DEV_DB_HOST,
+    username: process.env.DEV_DB_USERNAME,
+    database: process.env.DEV_DB_DATABASE,
+    dialect: process.env.DEV_DB_DIALECT
+};
 
-    return {
-        password:'123456',
-        port:'5050',
-        host:'localhost',
-        username:'postgres',
-        database:'laafisebe',
-        dialect:'postgres'
-    }
-}
-module.exports={DB}; 
+
+  
+module.exports = DB;
+
 
 /**
  *1.0

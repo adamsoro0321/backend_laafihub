@@ -1,5 +1,5 @@
 const {Sequelize,DataTypes} = require('sequelize');
-const {DB} =require('./config');
+
 
 /*Importation des models*/
 const {
@@ -13,6 +13,7 @@ const {
   PrescriptionModel,
   ProduidMedicalModel
 } =require('./models');
+const DB = require('./config');
 
 
 
@@ -21,6 +22,12 @@ const appSequelize = new Sequelize(DB.database, DB.username, DB.password, {
     host: DB.host,
     dialect:  'postgres',
   // logging: true,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false, // <-- Add this line
+    },
+  },
   });
 
   async function initializeDatabase() {
@@ -163,12 +170,19 @@ Prescription.belongsTo(AgentAssurance, { as: 'MedecinAssurance', foreignKey: 'id
 AgentAssurance.hasMany(Prescription, { as: 'AgentAssurance', foreignKey: 'idAgentAssurance' });
 Prescription.belongsTo(AgentAssurance, { as: 'AgentAssurance', foreignKey: 'idAgentAssurance' });
 
-appSequelize.sync({alter:true}).then(_=>console.log("sync succes"))
-                                .catch((e)=>{
-                                  console.log('error',"===>", e)
-                                }) ;
-                       
-                             
+
+ (async()=>{
+      try {
+        if (process.env.NODE_ENV==='production') {
+          await appSequelize.sync({alter:false}) ;
+        } else {
+          await appSequelize.sync({alter:true}) ;
+        }
+        console.log("sync succes") ;
+      } catch (error) {
+        console.log('error',"===>", error)
+      }
+ })()                            
 
 module.exports ={
 appSequelize,
