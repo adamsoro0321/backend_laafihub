@@ -19,4 +19,8 @@ heroku plugins:install heroku-repo
 
 heroku repo:purge_cache -a nom_de_votre_application
 
+heroku run bash
+
 ancient-springs-10322
+
+new Sequelize(process.env.DATABASE_URL)

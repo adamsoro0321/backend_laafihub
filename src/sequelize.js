@@ -15,22 +15,23 @@ const {
 } =require('./models');
 const DB = require('./config');
 
+const appSequelize=(process.env.NODE_ENV==="production")?new Sequelize(process.env.DATABASE_URL,{
+  dialectOptions:{
+    ssl:{
+      require:true,
+      rejectUnauthorized: false,
+    }
+  }
+})
+:new Sequelize(DB.database, DB.username, DB.password, {
+  host: DB.host,
+  dialect: 'postgres',
+ logging: true,
+}); 
 
 
 
-const appSequelize = new Sequelize(DB.database, DB.username, DB.password, {
-    host: DB.host,
-    dialect:  'postgres',
-  // logging: true,
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false, // <-- Add this line
-    },
-  },
-  });
-
-  async function initializeDatabase() {
+async function initializeDatabase() {
     try {
       await appSequelize.authenticate();
       console.log('Connection has been established successfully.');
@@ -41,7 +42,7 @@ const appSequelize = new Sequelize(DB.database, DB.username, DB.password, {
   initializeDatabase() ;
 
 const Structure=StructureModel(appSequelize,DataTypes);
-const Offre =OffreModel(appSequelize,DataTypes);
+
 const Maladie = MaladieModel(appSequelize,DataTypes)
 const OperationMedical =OperationMedicalModel(appSequelize,DataTypes);
 
@@ -49,7 +50,6 @@ const Partenaire=PartenaireModel(appSequelize,DataTypes);
 const RfidIdentify=RfidIdentifyModel(appSequelize,DataTypes);
 
 const Police =PoliceModel(appSequelize,DataTypes)
-const Categorie=CategorieModel(appSequelize,DataTypes,Police);
 
 
 const Assurance =AssuranceModel(appSequelize,DataTypes)
