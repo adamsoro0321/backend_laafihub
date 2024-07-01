@@ -1,12 +1,16 @@
-const {AgentAssurance}=require('../sequelize');
+const { AgentLabo}=require('../sequelize');
 const bcrypt =require('bcrypt') ;
 const jwt =require('jsonwebtoken'); 
 const private_jwt_key = require('../middleware/auth/private_key');
 
 
-const getAllAgentAssurance =async (req,res)=>{
+
+const getAllAgentLabo =async (req,res)=>{
       try {
-        const data = await AgentAssurance.findAll({where: { type:'agent' }}) ;
+        const data = await AgentLabo.findAll({
+          order: [['createdAt', 'DESC']],
+          attributes: { exclude: ['password','email_valide_date'] },
+        } ) ;
         res.json({message:'succes ',data}) ;
       } catch (error) {
         console.error(error);
@@ -15,31 +19,23 @@ const getAllAgentAssurance =async (req,res)=>{
 }
 const getAllAdmins =async (req,res)=>{
     try {
-      const data = await AgentAssurance.findAll({ where: { type:'admin' } }) ;
+      const data = await AgentLabo.findAll({ where: { type:'admin' } }) ;
       res.json({message:'succes ',data}) ;
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Something went wrong' });
     }
 }
-const getAllMedecins =async (req,res)=>{
-    try {
-      const data = await AgentAssurance.findAll({ where: { type:'medecin' } }) ;
-      res.json({message:'succes medecin',data}) ;
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Something went wrong' });
-    }
-}
 
-const getAgentAssuranceById =async (req,res)=>{
+
+const getAgentLaboById =async (req,res)=>{
     try {
         const id =req.params.id ;
-       const data= await AgentAssurance.findByPk(id) ;
+       const data= await AgentLabo.findByPk(id) ;
     if (data) {
         res.json({message:'succes',data}) ;
          }else{
-        res.status(404).json({error:'AgentAssurance not found'}) ;
+        res.status(404).json({error:'AgentLabo not found'}) ;
       }
     } catch (error) {
         console.error(error);
@@ -49,11 +45,11 @@ const getAgentAssuranceById =async (req,res)=>{
 const getAgentWhereById =async (req,res)=>{
     try {
         const id =req.params.id ;
-       const data= await AgentAssurance.findByPk(id) ;
+       const data= await AgentLabo.findByPk(id) ;
     if (data) {
         res.json({message:'succes',data}) ;
          }else{
-        res.status(404).json({error:'AgentAssurance not found'}) ;
+        res.status(404).json({error:'AgentLabo not found'}) ;
       }
     } catch (error) {
         console.error(error);
@@ -61,18 +57,18 @@ const getAgentWhereById =async (req,res)=>{
     }
 }
 
-const createAgentAssurance =async (req,res)=>{
+const createAgentLabo =async (req,res)=>{
     try {
 
         const { email, tel, password: inputPassword } = req.body;
         // Vérification si l'email est déjà utilisé
-        const emailExists = await AgentAssurance.findOne({ where: { email } });
+        const emailExists = await AgentLabo.findOne({ where: { email } });
         if (emailExists) {
             return res.status(400).json({ error: 'L\'email est déjà utilisé' });
         }
 
         // Vérification si le numéro de téléphone est déjà utilisé
-        const telExists = await AgentAssurance.findOne({ where: { tel } });
+        const telExists = await AgentLabo.findOne({ where: { tel } });
         if (telExists) {
             return res.status(400).json({ error: 'Le numéro de téléphone est déjà utilisé' });
         }
@@ -80,51 +76,51 @@ const createAgentAssurance =async (req,res)=>{
         // Si aucun mot de passe n'est fourni, définir un mot de passe par défaut
         const password = inputPassword || '123456';
           // Hash du mot de passe
-          const hashedPassword = await bcrypt.hash(password, 10); // Utilisation de 10 rounds de salage
+          const hashedPassword = await bcrypt.hash(password, 10); 
 
-        const data =await AgentAssurance.create({
+        const data =await AgentLabo.create({
             ...req.body, // Utilisation de la déstructuration pour inclure tous les champs de la requête
             password: hashedPassword,
             image
         });
-        res.status(201).json({ message:'succes create  agent assurance',data}) ;
+        res.status(201).json({ message:'succes create  agent ',data}) ;
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
     }
 }  //192.168.14.174
 
-const updatAgentAssurance =async (req, res)=>{
+const updatAgentLabo =async (req, res)=>{
     try {
         const id =req.params.id ;
        
-        const _AgentAssurance =await AgentAssurance.findByPk(id);
-      //  console.log('updater' ,id ,_AgentAssurance)
-        if (_AgentAssurance) {
-          const {image}= _AgentAssurance ;
-          const new_image = req.file ? `${req.file.filename}`:image;
+        const _AgentLabo =await AgentLabo.findByPk(id);
+      //  console.log('updater' ,id ,_AgentLabo)
+        if (_AgentLabo) {
+       
+            const {image}= _AgentLabo ;
+            const new_image = req.file ? `${req.file.filename}`:image;
 
-          const new_agent ={...req.body,image:new_image } ;
-         
-            await _AgentAssurance.update(new_agent) ;
-            res.status(202).json(_AgentAssurance)
+            const new_agent ={...req.body,image:new_image } ;
+            await _AgentLabo.update(new_agent) ;
+            res.status(202).json({message:'succes',agent:_AgentLabo})
         } else {
-            res.status(404).json({ error: 'AgentAssurance not found' });
+            res.status(404).json({ error: 'AgentLabo not found' });
         }
     } catch (error) {
         res.status(500).json({ error: 'Something went wrong' });
     }
 }
 
-const deleteAgentAssurance=async (req,res)=>{
+const deleteAgentLabo=async (req,res)=>{
     try {
         const id =req.params.id ;
-        const _AgentAssurance =await AgentAssurance.findByPk(id);
-        if (_AgentAssurance) {
-            await _AgentAssurance.destroy() ;
+        const _AgentLabo =await AgentLabo.findByPk(id);
+        if (_AgentLabo) {
+            await _AgentLabo.destroy() ;
             res.status(200).json({message:'succes deleting'});
         } else {
-            res.status(404).json({error:'AgentAssurance not found'});
+            res.status(404).json({error:'AgentLabo not found'});
         }
     } catch (error) {
         console.error(error);
@@ -140,7 +136,7 @@ const login =async (req,res)=>{
             const message="Entrez un email et un mot de passe";
            return  res.status(402).json({message}) ;
         }
-       const user= await AgentAssurance.findOne({where:{email:email}})
+       const user= await AgentLabo.findOne({where:{email:email}})
        if (!user) {
         const message=`Cet email n'est pas Enregistrez ${email} `;
           return  res.status(402).json({message}) ;
@@ -174,7 +170,7 @@ const changePassword=async (req, res) => {
     }
 
     try {
-      const agent = await AgentAssurance.findOne({ where: { email } });
+      const agent = await AgentLabo.findOne({ where: { email } });
       
       if (!agent) {
         return res.status(404).json({ error: 'Agent non trouvé.' });
@@ -200,15 +196,14 @@ const changePassword=async (req, res) => {
 
 
 
-module.exports.AgentAssuranceControllers={
-    getAllAgentAssurance,
-    getAgentAssuranceById,
-    createAgentAssurance,
-    updatAgentAssurance,
-    deleteAgentAssurance,
+module.exports.AgentLaboControllers={
+    getAllAgentLabo,
+    getAgentLaboById,
+    createAgentLabo,
+    updatAgentLabo,
+    deleteAgentLabo,
     login,
-  getAllAdmins,
-  getAllMedecins,
+   
     getAgentWhereById,
     changePassword
 }

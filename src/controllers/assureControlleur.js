@@ -7,9 +7,8 @@ const getAllAssure =async (req,res)=>{
             {
                 include: [
                     { model: Structure },
-                    { model:Police 
-                      
-                    },
+                    { model:Police   },                 
+                  
                 ]
             }
         ) ;
@@ -76,7 +75,7 @@ const createAssure = async (req, res) => {
          if (telExists) {
              return res.status(400).json({ error: 'Le numéro de téléphone est déjà utilisé' });
          }
- 
+         const image = req.file ? `${req.file.filename}`: null;
          // Si aucun mot de passe n'est fourni, définir un mot de passe par défaut
          const password = inputPassword || '12345678';
  
@@ -87,6 +86,7 @@ const createAssure = async (req, res) => {
         const assure = await Assure.create({
             ...req.body, // Utilisation de la déstructuration pour inclure tous les champs de la requête
             password: hashedPassword,
+            image
         });
 
         res.status(201).json({ message: 'Assuré créé avec succès' });
@@ -105,9 +105,12 @@ const updatAssure =async (req, res)=>{
         const _Assure =await Assure.findByPk(id);
       //  console.log('updater' ,id ,_Assure)
         if (_Assure) {
-            const data =req.body ;
-           /// console.log("body data",data) ;
-            await _Assure.update(req.body) ;
+            const {image}= _Assure ;
+            const new_image = req.file ? `${req.file.filename}`:image;
+
+            const new_assure ={...req.body,image:new_image } ;
+          
+            await _Assure.update(new_assure) ;
             res.status(202).json(_Assure)
         } else {
             res.status(404).json({ error: 'Assure not found' });

@@ -29,6 +29,13 @@ const getPrescriptionById = async (req, res) => {
             ]
         });
         if (data) {
+           /* const {
+                assure,
+                agent_clinique,
+                MedecinAssurance,
+                AgentAssurance,
+                
+            } =data ;*/
             res.json({ message: 'Success', data });
         } else {
             res.status(404).json({ error: 'Prescription not found' });
@@ -88,7 +95,7 @@ const deletePrescription=async (req,res)=>{
     }
 }
 
-module.exports.PrescriptionControllers={
+module.exports. PrescriptionControllers={
     getAllPrescription,
     getPrescriptionById,
     createPrescription,

@@ -1,16 +1,9 @@
-module.exports.AgentAssuranceModel = (sequelize, DataTypes, type = 'agent') => {
-    const AgentAssurance = sequelize.define('AgentAssurance', {
+module.exports.createAgentModel = (sequelize, DataTypes, modelName, partenaireModel) => {
+    const AgentModel = sequelize.define(modelName, {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
-        },
-        type: {
-            type: DataTypes.STRING,
-            defaultValue: type,
-            validate: {
-                isIn: [['agent', 'admin', 'medecin']]
-            }
         },
         nom: {
             type: DataTypes.STRING,
@@ -22,39 +15,39 @@ module.exports.AgentAssuranceModel = (sequelize, DataTypes, type = 'agent') => {
         },
         tel: {
             type: DataTypes.STRING,
-            unique: true,
-        },
-        fullName: {
-            type: DataTypes.VIRTUAL,
-            get() {
-                return `${this.nom} ${this.prenom}`;
-            }
+            unique: true
         },
         email: {
             type: DataTypes.STRING,
-            allowNull: false,
             unique: true,
             validate: {
-                isEmail: true
+                isEmail: true,
             }
-        },
-        image: {
-            type: DataTypes.STRING
         },
         password: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        type: {
+            type: DataTypes.STRING,
+            defaultValue: 'agent',
+            validate: {
+                isIn: [['agent', 'admin']],
+            }
         },
         isMailValid: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
         emailValideDate: {
-            type: DataTypes.DATE
+            type: DataTypes.DATE,
         }
-    }, {
-        timestamps: true
     });
 
-    return AgentAssurance;
+    if (partenaireModel) {
+        AgentModel.belongsTo(partenaireModel, { foreignKey: 'partenaireId' });
+        partenaireModel.hasMany(AgentModel, { foreignKey: 'partenaireId' });
+    }
+
+    return AgentModel;
 };

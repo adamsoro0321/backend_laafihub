@@ -3,11 +3,10 @@ const bodyParser = require('body-parser');
 const cors =require('cors') ;
 
 
-const { AssureControllers ,
-
+const { 
+    AssureControllers ,
     MedecinCliniqueControllers,
-
-     OperationMedicalControllers ,
+    OperationMedicalControllers ,
     AgentAssuranceControllers,
     MedecinConseilleControllers,
     MaladieControllers,
@@ -21,10 +20,11 @@ const { AssureControllers ,
 
 
 const AppMulter = require('./src/multer');
-const auth = require('./src/auth/auth');
-
 const { kafka } = require('./src/kafka/kafka');
 const { produitMedicalControllers } = require('./src/controllers/ProduidMedicalController');
+const auth = require('./src/middleware/auth/auth');
+const { AgentLaboControllers } = require('./src/controllers/agentLaboratoireController');
+const { AgentPharmaControllers } = require('./src/controllers/agentPharmacyControlleur');
 
 
 
@@ -38,145 +38,155 @@ app.get('/',(req,res)=>{
 } )
 
 /**1.0 agent assurance */
- app.post('/api/v1/asssurance/agent/login',(req,res)=>AgentAssuranceControllers.login(req,res) ) ;
- app.get('/api/v1/asssurance/agents', (req,res)=> AgentAssuranceControllers.getAllAgentAssurance(req,res));
- app.get('/api/v1/asssurance/medecins', (req,res)=> AgentAssuranceControllers.getAllMedecins(req,res));
- app.get('/api/v1/asssurance/admins', (req,res)=> AgentAssuranceControllers.getAllAdmins(req,res));
- app.get('/api/v1/asssurance/agent/:id',(req,res)=>AgentAssuranceControllers.getAgentAssuranceById(req, res));
- app.put('/api/v1/asssurance/agent/:id',(req,res)=>AgentAssuranceControllers.updatAgentAssurance(req,res));
- app.post('/api/v1/asssurance/agent',(req,res)=>AgentAssuranceControllers.createAgentAssurance(req,res));
- app.delete('/api/v1/asssurance/agent/:id',(req,res)=>AgentAssuranceControllers.deleteAgentAssurance(req,res))
- app.get('/api/v1/asssurance/agents/type/:type',(req,res)=>AgentAssuranceControllers.getAllAgentWhere(req,res) )
+ app.post('/api/v1/asssurance/agent/login',(req,res)=>AgentAssuranceControllers.login(req,res)) ;
+ app.post('api/v1/change-password', (req, res) => AgentAssuranceControllers.changePassword(req, res));
+ app.get('/api/v1/asssurance/agents',auth, (req,res)=> AgentAssuranceControllers.getAllAgentAssurance(req,res));
+ app.get('/api/v1/asssurance/medecins',auth, (req,res)=> AgentAssuranceControllers.getAllMedecins(req,res));
+ app.get('/api/v1/asssurance/admins',auth, (req,res)=> AgentAssuranceControllers.getAllAdmins(req,res));
+ app.get('/api/v1/asssurance/agent/:id',auth, (req,res)=>AgentAssuranceControllers.getAgentAssuranceById(req, res));
+ app.put('/api/v1/asssurance/agent/:id',auth, (req,res)=>AgentAssuranceControllers.updatAgentAssurance(req,res));
+ app.post('/api/v1/asssurance/agent',auth ,(req,res)=>AgentAssuranceControllers.createAgentAssurance(req,res));
+ app.delete('/api/v1/asssurance/agent/:id',auth, (req,res)=>AgentAssuranceControllers.deleteAgentAssurance(req,res))
+ app.get('/api/v1/asssurance/agents/type/:type',auth,  (req,res)=>AgentAssuranceControllers.getAllAgentWhere(req,res) )
 
 /**8.0 MedecinConseilleControllers */ 
-app.get('/api/v1/medecinconseille', (req,res)=> MedecinConseilleControllers.getAllMedecinConseille(req,res));
-app.get('/api/v1/medecinconseille/:id',(req,res)=>MedecinConseilleControllers.getMedecinConseilleById(req, res));
-app.put('/api/v1/medecinconseille/:id',(req,res)=>MedecinConseilleControllers.updateMedecinConseille(req,res));
-app.post('/api/v1/medecinconseille',(req,res)=>MedecinConseilleControllers.createMedecinConseille(req,res));
-app.delete('/api/v1/medecinconseille/:id',(req,res)=>MedecinConseilleControllers.deleteMedecinConseille(req,res)) ;
+app.get('/api/v1/medecinconseille',auth, (req,res)=> MedecinConseilleControllers.getAllMedecinConseille(req,res));
+app.get('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.getMedecinConseilleById(req, res));
+app.put('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.updateMedecinConseille(req,res));
+app.post('/api/v1/medecinconseille',auth, (req,res)=>MedecinConseilleControllers.createMedecinConseille(req,res));
+app.delete('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.deleteMedecinConseille(req,res)) ;
 
 /**2.0 assure endpont */
- app.get('/api/v1/assures', (req,res)=> AssureControllers.getAllAssure(req,res));
- app.get('/api/v1/assure/:id',(req,res)=>AssureControllers.getAssureById(req, res));
- app.put('/api/v1/assure/:id',(req,res)=>AssureControllers.updatAssure(req,res));
- app.post('/api/v1/assure',(req,res)=>AssureControllers.createAssure(req,res));
- app.delete('/api/v1/assure/:id',(req,res)=>AssureControllers.deleteAssure(req,res))
- app.get('/api/v1/assure/prescriptions/:id',(req,res)=>AssureControllers.getPrescription(req, res));
+ app.get('/api/v1/assures',auth, (req,res)=> AssureControllers.getAllAssure(req,res));
+ app.get('/api/v1/assure/:id',auth,(req,res)=>AssureControllers.getAssureById(req, res));
+ app.put('/api/v1/assure/:id',auth, (req,res)=>AssureControllers.updatAssure(req,res));
+ app.post('/api/v1/assure',auth,(req,res)=>AssureControllers.createAssure(req,res));
+ app.delete('/api/v1/assure/:id',auth,(req,res)=>AssureControllers.deleteAssure(req,res))
+ app.get('/api/v1/assure/prescriptions/:id',auth ,(req,res)=>AssureControllers.getPrescription(req, res));
 
 
 /**4.0 partenaire endpoint  */
-app.get('/api/v1/partenaires', (req,res)=> PartenaireControllers.getAllPartenaire(req,res));
-app.get('/api/v1/partenaires/cliniques', (req,res)=> PartenaireControllers.getAllClinique(req,res));
-app.get('/api/v1/partenaires/pharmacies', (req,res)=> PartenaireControllers.getAllPharmacy(req,res));
-app.get('/api/v1/partenaires/laboratoires', (req,res)=> PartenaireControllers.getAllLaboratoire(req,res));
-app.get('/api/v1/partenaires/cliniquelaboratoires', (req,res)=> PartenaireControllers.getAllCliniqueLaboratoire(req,res));
-app.get('/api/v1/partenaire/:id',(req,res)=>PartenaireControllers.getPartenaireById(req, res));
-app.put('/api/v1/partenaire/:id',(req,res)=>PartenaireControllers.updatPartenaire(req,res));
-app.post('/api/v1/partenaire',(req,res)=>PartenaireControllers.createPartenaire(req,res));
-app.delete('/api/v1/partenaire/:id',(req,res)=>PartenaireControllers.deletePartenaire(req,res)) ;
+app.get('/api/v1/partenaires',auth, (req,res)=> PartenaireControllers.getAllPartenaire(req,res));
+app.get('/api/v1/partenaires/cliniques',auth, (req,res)=> PartenaireControllers.getAllClinique(req,res));
+app.get('/api/v1/partenaires/pharmacies',auth, (req,res)=> PartenaireControllers.getAllPharmacy(req,res));
+app.get('/api/v1/partenaires/laboratoires',auth, (req,res)=> PartenaireControllers.getAllLaboratoire(req,res));
+app.get('/api/v1/partenaires/cliniquelaboratoires',auth, (req,res)=> PartenaireControllers.getAllCliniqueLaboratoire(req,res));
+app.get('/api/v1/partenaire/:id',auth, (req,res)=>PartenaireControllers.getPartenaireById(req, res));
+app.put('/api/v1/partenaire/:id',auth, (req,res)=>PartenaireControllers.updatPartenaire(req,res));
+app.post('/api/v1/partenaire',auth, (req,res)=>PartenaireControllers.createPartenaire(req,res));
+app.delete('/api/v1/partenaire/:id',auth, (req,res)=>PartenaireControllers.deletePartenaire(req,res)) ;
 
 /** 5.0 MedecinCliniqueControllers */ 
-app.get('/api/v1/medecincliniques', (req,res)=> MedecinCliniqueControllers.getAllMedecinClinique(req,res));
-app.get('/api/v1/medecinclinique/:id',(req,res)=>MedecinCliniqueControllers.getMedecinCliniqueById(req, res));
-app.put('/api/v1/medecinclinique/:id',(req,res)=>MedecinCliniqueControllers.updatMedecinClinique(req,res));
-app.post('/api/v1/medecinclinique',(req,res)=>MedecinCliniqueControllers.createMedecinClinique(req,res));
-app.delete('/api/v1/medecinclinique/:id',(req,res)=>MedecinCliniqueControllers.deleteMedecinClinique(req,res)) ;
+app.get('/api/v1/medecincliniques', auth, (req,res)=> MedecinCliniqueControllers.getAllMedecinClinique(req,res));
+app.get('/api/v1/medecinclinique/:id',auth, (req,res)=>MedecinCliniqueControllers.getMedecinCliniqueById(req, res));
+app.put('/api/v1/medecinclinique/:id',auth, (req,res)=>MedecinCliniqueControllers.updatMedecinClinique(req,res));
+app.post('/api/v1/medecinclinique',auth, (req,res)=>MedecinCliniqueControllers.createMedecinClinique(req,res));
+app.delete('/api/v1/medecinclinique/:id',auth, (req,res)=>MedecinCliniqueControllers.deleteMedecinClinique(req,res)) ;
 
 /**6.0   PoliceControllers */ 
-app.get('/api/v1/polices', (req,res)=> PoliceControllers.getAllPolice(req,res));
-app.get('/api/v1/police/:id',(req,res)=> PoliceControllers.getPoliceById(req, res));
-app.get('/api/v1/police-number', (req,res)=>PoliceControllers.getNumber(req,res));
-app.get('/api/v1/police/:id/details', (req,res)=>PoliceControllers.getMaladiesOperation(req,res));
-app.put('/api/v1/police/:id',(req,res)=> PoliceControllers.updatePolice(req,res));
-app.post('/api/v1/police',(req,res)=>  PoliceControllers.createPolice(req,res));
-app.delete('/api/v1/police/:id',(req,res)=>  PoliceControllers.deletePolice(req,res)) ;
+app.get('/api/v1/polices', auth,  (req,res)=> PoliceControllers.getAllPolice(req,res));
+app.get('/api/v1/police/:id',auth, (req,res)=> PoliceControllers.getPoliceById(req, res));
+app.get('/api/v1/police-number',auth,  (req,res)=>PoliceControllers.getNumber(req,res));
+app.get('/api/v1/police/:id/details',auth,  (req,res)=>PoliceControllers.getMaladiesOperation(req,res));
+app.put('/api/v1/police/:id',auth, (req,res)=> PoliceControllers.updatePolice(req,res));
+app.post('/api/v1/police',auth, (req,res)=>  PoliceControllers.createPolice(req,res));
+app.delete('/api/v1/police/:id',auth, (req,res)=>  PoliceControllers.deletePolice(req,res)) ;
 
 
 /**10.0 maladie endpoint */
-app.get('/api/v1/maladies', (req,res)=>MaladieControllers.getAllMaladie(req,res));
-app.get('/api/v1/maladie/:id',(req,res)=>MaladieControllers.getMaladieById(req, res));
-app.put('/api/v1/maladie/:id',(req,res)=>MaladieControllers.updateMaladie(req,res));
-app.post('/api/v1/maladie',(req,res)=>MaladieControllers.createMaladie(req,res));
-app.delete('/api/v1/maladie/:id',(req,res)=>MaladieControllers.deleteMaladie(req,res)) ;
+app.get('/api/v1/maladies',auth,  (req,res)=>MaladieControllers.getAllMaladie(req,res));
+app.get('/api/v1/maladie/:id',auth, (req,res)=>MaladieControllers.getMaladieById(req, res));
+app.put('/api/v1/maladie/:id',auth, (req,res)=>MaladieControllers.updateMaladie(req,res));
+app.post('/api/v1/maladie',auth, (req,res)=>MaladieControllers.createMaladie(req,res));
+app.delete('/api/v1/maladie/:id',auth, (req,res)=>MaladieControllers.deleteMaladie(req,res)) ;
 /**10.0 operation-medicale endpoint */
-app.get('/api/v1/operation_medicales', (req,res)=>OperationMedicalControllers.getAllOperationMedical(req,res));
-app.get('/api/v1/operation_medicale/:id',(req,res)=>OperationMedicalControllers.getOperationMedicalById(req, res));
-app.put('/api/v1/operation_medicale/:id',(req,res)=>OperationMedicalControllers.updatOperationMedical(req,res));
-app.post('/api/v1/operation_medicale',(req,res)=>OperationMedicalControllers.createOperationMedical(req,res));
-app.delete('/api/v1/operation_medicale/:id',(req,res)=>OperationMedicalControllers.deleteOperationMedical(req,res)) ;
+app.get('/api/v1/operation_medicales',auth,  (req,res)=>OperationMedicalControllers.getAllOperationMedical(req,res));
+app.get('/api/v1/operation_medicale/:id',auth, (req,res)=>OperationMedicalControllers.getOperationMedicalById(req, res));
+app.put('/api/v1/operation_medicale/:id',auth, (req,res)=>OperationMedicalControllers.updatOperationMedical(req,res));
+app.post('/api/v1/operation_medicale',auth, (req,res)=>OperationMedicalControllers.createOperationMedical(req,res));
+app.delete('/api/v1/operation_medicale/:id',auth, (req,res)=>OperationMedicalControllers.deleteOperationMedical(req,res)) ;
 
 
 /**15.0 agentCliniqueControllers */ 
-app.get('/api/v1/clinique/agents', (req,res)=> AgentCliniqueControllers.getAllAgentClinique(req,res));
-app.get('/api/v1/clinique/agent/:id',(req,res)=>AgentCliniqueControllers.getAgentCliniqueById(req, res));
-app.put('/api/v1/clinique/agent/:id',(req,res)=>AgentCliniqueControllers.updateAgentClinique(req,res));
-app.post('/api/v1/clinique/agent',(req,res)=>AgentCliniqueControllers.createAgentClinique(req,res));
-app.delete('/api/v1/cliniqpharmacyue/agent/:id',(req,res)=>AgentCliniqueControllers.deleteAgentClinique(req,res)) ;
+app.post('/api/v1/clinique/agent/login',  (req,res)=> AgentCliniqueControllers.login(req,res));
+app.get('/api/v1/clinique/agents', auth,  (req,res)=> AgentCliniqueControllers.getAllAgentClinique(req,res));
+app.get('/api/v1/clinique/agent/:id', auth, (req,res)=>AgentCliniqueControllers.getAgentCliniqueById(req, res));
+app.put('/api/v1/clinique/agent/:id', auth, (req,res)=>AgentCliniqueControllers.updateAgentClinique(req,res));
+app.post('/api/v1/clinique/agent', auth, (req,res)=>AgentCliniqueControllers.createAgentClinique(req,res));
+app.delete('/api/v1/cliniqpharmacyue/agent/:id', auth, (req,res)=>AgentCliniqueControllers.deleteAgentClinique(req,res)) ;
 
 /**16.0 labo && agent pharmacy */
-app.get('/api/v1/pharmacy/agents', (req,res)=> AgentCliniqueControllers.getAllAgentClinique(req,res));
-app.get('/api/v1/pharmacy/agent/:id',(req,res)=>AgentCliniqueControllers.getAgentCliniqueById(req, res));
-app.put('/api/v1/pharmacy/agent/:id',(req,res)=>AgentCliniqueControllers.updateAgentClinique(req,res));
-app.post('/api/v1/pharmacy/agent',(req,res)=>AgentCliniqueControllers.createAgentClinique(req,res));
-app.delete('/api/v1/pharmacy/agent/:id',(req,res)=>AgentCliniqueControllers.deleteAgentClinique(req,res)) ;
+app.post('/api/v1/pharmacy/agent/login', (req,res)=> AgentPharmaControllers.login(req,res));
+app.get('/api/v1/pharmacy/agents',auth,  (req,res)=> AgentPharmaControllers.getAllAgentPharma(req,res));
+app.get('/api/v1/pharmacy/agent/:id',auth, (req,res)=>AgentPharmaControllers.getAgentPharmaById(req, res));
+app.put('/api/v1/pharmacy/agent/:id',auth, (req,res)=>AgentPharmaControllers.updatAgentPharma(req,res));
+app.post('/api/v1/pharmacy/agent',auth, AppMulter.single('file'), 
+                                     (req,res)=>AgentPharmaControllers.createAgentPharma(req,res));
+
+app.delete('/api/v1/pharmacy/agent/:id',auth, 
+                                       (req,res)=>AgentPharmaControllers.deleteAgentPharma(req,res)) ;
 
 /**laboratoire && agent laboratoire */
-app.get('/api/v1/laboratoire/agents', (req,res)=> AgentCliniqueControllers.getAllAgentClinique(req,res));
-app.get('/api/v1/laboratoire/agent/:id',(req,res)=>AgentCliniqueControllers.getAgentCliniqueById(req, res));
-app.put('/api/v1/laboratoire/agent/:id',(req,res)=>AgentCliniqueControllers.updateAgentClinique(req,res));
-app.post('/api/v1/laboratoire/agent',(req,res)=>AgentCliniqueControllers.createAgentClinique(req,res));
-app.delete('/api/v1/laboratoire/agent/:id',(req,res)=>AgentCliniqueControllers.deleteAgentClinique(req,res)) ;
+app.post('/api/v1/laboratoire/agent/login',  (req,res)=> AgentLaboControllers.login(req,res));
+app.get('/api/v1/laboratoire/agents',auth,  (req,res)=> AgentLaboControllers.getAllAgentLabo(req,res));
+app.get('/api/v1/laboratoire/agent/admins',auth,  (req,res)=> AgentLaboControllers.getAllAdmins(req,res));
+app.get('/api/v1/laboratoire/agent/:id',auth, (req,res)=>AgentLaboControllers.getAgentLaboById(req, res));
+app.put('/api/v1/laboratoire/agent/:id',auth, (req,res)=>AgentLaboControllers.updatAgentLabo(req,res));
+app.post('/api/v1/laboratoire/agent',auth, (req,res)=>AgentLaboControllers.createAgentLabo(req,res));
+app.delete('/api/v1/laboratoire/agent/:id',auth, (req,res)=>AgentLaboControllers.deleteAgentLabo(req,res)) ;
 
 /**16.0 PrescriptionControllers */ 
-app.get('/api/v1/prescriptions', (req,res)=> PrescriptionControllers.getAllPrescription(req,res));
-app.get('/api/v1/prescription/:id',(req,res)=>PrescriptionControllers.getPrescriptionById(req, res));
-app.put('/api/v1/prescription/:id',(req,res)=>PrescriptionControllers.updatPrescription(req,res));
-app.post('/api/v1/prescription',(req,res)=>PrescriptionControllers.createPrescription(req,res));
-app.delete('/api/v1/prescription/:id',(req,res)=>PrescriptionControllers.deletePrescription(req,res)) ;
+app.get('/api/v1/prescriptions', auth,  (req,res)=> PrescriptionControllers.getAllPrescription(req,res));
+app.get('/api/v1/prescription/:id', auth, (req,res)=>PrescriptionControllers.getPrescriptionById(req, res));
+app.put('/api/v1/prescription/:id', auth, (req,res)=>PrescriptionControllers.updatPrescription(req,res));
+app.post('/api/v1/prescription', auth, (req,res)=>PrescriptionControllers.createPrescription(req,res));
+app.delete('/api/v1/prescription/:id', auth, (req,res)=>PrescriptionControllers.deletePrescription(req,res)) ;
  
 /**17.0 ReclammationControllers */ 
-app.get('/api/v1/reclammation', (req,res)=> ReclammationControllers.getAllReclammation(req,res));
-app.get('/api/v1/reclammation/:id',(req,res)=>ReclammationControllers.getReclammationById(req, res));
-app.put('/api/v1/reclammation/:id',(req,res)=>ReclammationControllers.updAteReclammation(req,res));
-app.post('/api/v1/reclammation',(req,res)=>ReclammationControllers.createReclammation(req,res));
-app.delete('/api/v1/reclammation/:id',(req,res)=>ReclammationControllers.deleteReclammation(req,res)) ;
- 
+app.get('/api/v1/reclammation',auth,  (req,res)=> ReclammationControllers.getAllReclammation(req,res));
+app.get('/api/v1/reclammation/:id',auth, (req,res)=>ReclammationControllers.getReclammationById(req, res));
+app.put('/api/v1/reclammation/:id',auth, (req,res)=>ReclammationControllers.updAteReclammation(req,res));
+app.post('/api/v1/reclammation',auth, (req,res)=>ReclammationControllers.createReclammation(req,res));
+app.delete('/api/v1/reclammation/:id',auth, (req,res)=>ReclammationControllers.deleteReclammation(req,res)) ;
 
 /**19.0 Structure endpoint */
 
-app.get('/api/v1/structures', (req,res)=>StructureControllers.getAllStructure(req,res) );
-app.get('/api/v1/stucture/:id',(req,res)=>StructureControllers.getStructureById(req, res));
-app.get('/api/v1/stucture/matricule/:structureId',(req,res)=>StructureControllers.getMatriculeById(req, res));
-app.put('/api/v1/structure/:id',(req,res)=>StructureControllers.updatStructure(req,res));
-app.post('/api/v1/structure',(req,res)=>StructureControllers.createStructure(req,res));
-app.delete('/api/v1/structure/:id',(req,res)=>StructureControllers.deleteStructure(req,res)) ;
-app.get('/api/v1/stucture_code',(req,res)=>StructureControllers.getStructureCode(req, res));
-app.get('/api/v1/structure/:id/details', (req,res)=>StructureControllers.getDetail(req,res) );
+app.get('/api/v1/structures', auth, (req,res)=>StructureControllers.getAllStructure(req,res) );
+app.get('/api/v1/stucture/:id',auth,(req,res)=>StructureControllers.getStructureById(req, res));
+app.get('/api/v1/stucture/matricule/:structureId',auth,(req,res)=>StructureControllers.getMatriculeById(req, res));
+app.put('/api/v1/structure/:id',auth,(req,res)=>StructureControllers.updatStructure(req,res));
+app.post('/api/v1/structure',auth,(req,res)=>StructureControllers.createStructure(req,res));
+app.delete('/api/v1/structure/:id',auth,(req,res)=>StructureControllers.deleteStructure(req,res)) ;
+app.get('/api/v1/stucture_code',auth,(req,res)=>StructureControllers.getStructureCode(req, res));
+app.get('/api/v1/structure/:id/details',auth, (req,res)=>StructureControllers.getDetail(req,res) );
 
 /**20.0 offre endpoint */
-app.get('/api/v1/offres', (req,res)=>StructureControllers.getAllStructure(req,res) );
-app.get('/api/v1/offre/:id',(req,res)=>StructureControllers.getStructureById(req, res));
-app.put('/api/v1/offre/:id',(req,res)=>StructureControllers.updatStructure(req,res));
-app.post('/api/v1/offre',(req,res)=>StructureControllers.createStructure(req,res));
-app.delete('/api/v1/offre/:id',(req,res)=>StructureControllers.deleteStructure(req,res)) ;
+app.get('/api/v1/offres',auth,  (req,res)=>StructureControllers.getAllStructure(req,res) );
+app.get('/api/v1/offre/:id',auth, (req,res)=>StructureControllers.getStructureById(req, res));
+app.put('/api/v1/offre/:id',auth, (req,res)=>StructureControllers.updatStructure(req,res));
+app.post('/api/v1/offre',auth, (req,res)=>StructureControllers.createStructure(req,res));
+app.delete('/api/v1/offre/:id',auth, (req,res)=>StructureControllers.deleteStructure(req,res)) ;
 
 /** categorie */ 
-app.get('/api/v1/categories', (req,res)=>CategoriControllers.getAllCategori(req,res) );
-app.get('/api/v1/categorie/:id',(req,res)=>CategoriControllers.getCategoriById(req, res));
-app.put('/api/v1/categorie/:id',(req,res)=>CategoriControllers.updatCategori(req,res));
-app.post('/api/v1/categorie',(req,res)=>CategoriControllers.createCategori(req,res));
-app.delete('/api/v1/categorie/:id',(req,res)=>CategoriControllers.deleteCategori(req,res)) ;
+app.get('/api/v1/categories',auth,  (req,res)=>CategoriControllers.getAllCategori(req,res) );
+app.get('/api/v1/categorie/:id',auth, (req,res)=>CategoriControllers.getCategoriById(req, res));
+app.put('/api/v1/categorie/:id',auth, (req,res)=>CategoriControllers.updatCategori(req,res));
+app.post('/api/v1/categorie',auth, (req,res)=>CategoriControllers.createCategori(req,res));
+app.delete('/api/v1/categorie/:id',auth, (req,res)=>CategoriControllers.deleteCategori(req,res)) ;
 
 /** produit Medical */
-app.get('/api/v1/produit_medicals', (req,res)=>produitMedicalControllers.getAllproduitMedical(req,res) );
-app.get('/api/v1/produit_medical/:id',(req,res)=>produitMedicalControllers.getproduitMedicalById(req,res));
-app.put('/api/v1/produit_medical/:id',(req,res)=>produitMedicalControllers.updatproduitMedical(req,res));
-app.post('/api/v1/produit_medical',(req,res)=>produitMedicalControllers.createproduitMedical(req,res));
-app.delete('/api/v1/produit_medical/:id',(req,res)=>produitMedicalControllers.deleteproduitMedical(req,res)) ;
+app.get('/api/v1/produit_medicals',auth,  (req,res)=>produitMedicalControllers.getAllproduitMedical(req,res) );
+app.get('/api/v1/produit_medical/:id',auth, (req,res)=>produitMedicalControllers.getproduitMedicalById(req,res));
+app.put('/api/v1/produit_medical/:id',auth, (req,res)=>produitMedicalControllers.updatproduitMedical(req,res));
+app.post('/api/v1/produit_medical',auth, (req,res)=>produitMedicalControllers.createproduitMedical(req,res));
+app.delete('/api/v1/produit_medical/:id',auth, (req,res)=>produitMedicalControllers.deleteproduitMedical(req,res)) ;
 
 /** upload image with multer */
-
-app.post('/api/v1/image', AppMulter.single('file'),(req,res)=>{
+app.post('/api/v1/image',auth, AppMulter.single('file'),(req,res)=>{
+  console.log("body", req.body);
+   console.log("file", req.file);
+   const image = req.file ? `/files/${req.file.filename}` : null;
+   console.log("image",image)
     res.jsonp({message:'succes'})
 }) ;
 

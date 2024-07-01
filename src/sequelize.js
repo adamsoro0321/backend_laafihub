@@ -6,7 +6,7 @@ const {
   AssuranceModel, AgentAssuranceModel,
   AgentCliniqueModel, AssureModel, 
   MaladieModel, PoliceMaladieModel, PoliceModel, 
-  ReclammationModel, CategorieModel, StructureModel, OffreModel,
+  ReclammationModel,  StructureModel,
   OperationMedicalModel, PoliceOperationMedicalModel,
   PartenaireModel,RfidIdentifyModel,AgentCliniqueLaboModel,
   AgentLaboModel,AgentPharmacyceModel,
@@ -14,6 +14,7 @@ const {
   ProduidMedicalModel
 } =require('./models');
 const DB = require('./config');
+const { createAgentModel } = require('./models/AgentModel ');
 
 const appSequelize=(process.env.NODE_ENV==="production")?new Sequelize(process.env.DATABASE_URL,{
   dialectOptions:{
@@ -55,17 +56,27 @@ const Police =PoliceModel(appSequelize,DataTypes)
 const Assurance =AssuranceModel(appSequelize,DataTypes)
 const Assure =AssureModel(appSequelize,DataTypes,Police,Structure)
 
+const createPartenaireType = (type) => PartenaireModel(appSequelize, DataTypes).scope({ where: { type } });
 
-const Clinique =PartenaireModel(appSequelize,DataTypes)
-const Labo =PartenaireModel(appSequelize,DataTypes,'laboratoire')
-const Pharmacy =PartenaireModel(appSequelize,DataTypes,'pharmacy')
-const CliniqueLabo =PartenaireModel(appSequelize,DataTypes,'clinique_laboratoire')
+const Clinique = createPartenaireType('clinique');
+const Labo = createPartenaireType('laboratoire');
+const Pharmacy = createPartenaireType('pharmacy');
+const CliniqueLabo = createPartenaireType('clinique_laboratoire');
+/*
+const AgentAssurance = AgentAssuranceModel(appSequelize,DataTypes)
+const AgentClinique = createAgentModel(appSequelize, DataTypes, 'AgentClinique', Clinique);
+const AgentLabo = createAgentModel(appSequelize, DataTypes, 'AgentLabo', Labo);
+const AgentPharma = createAgentModel(appSequelize,  DataTypes, 'AgentCliniqueLabo', CliniqueLabo);
+*/
+
 
 const AgentClinique = AgentCliniqueModel(appSequelize,DataTypes,Clinique)
 const AgentAssurance = AgentAssuranceModel(appSequelize,DataTypes)
 const AgentLabo =AgentLaboModel(appSequelize,DataTypes,Labo) ;
 const AgentPharma = AgentPharmacyceModel(appSequelize,DataTypes,Pharmacy);
 const AgentCliniqueLabo =AgentCliniqueLaboModel(appSequelize,DataTypes,CliniqueLabo);
+
+
 
 const MedecinConseille=AgentAssuranceModel(appSequelize,DataTypes,'medecin')
 
@@ -131,17 +142,53 @@ Assure.belongsTo(Structure,{
 });
 
 /** relation entre un medecinClinique et un clinique */
-Clinique.hasMany(AgentClinique);
-AgentClinique.belongsTo(Clinique);
+ // Associations for Clinique and AgentClinique
+ Clinique.hasMany(AgentClinique, {
+  foreignKey: 'idClinique',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
+AgentClinique.belongsTo(Clinique, {
+  foreignKey: 'idClinique',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
 
-Labo.hasMany(AgentLabo)
-AgentLabo.belongsTo(Labo)
+// Associations for Labo and AgentLabo
+Labo.hasMany(AgentLabo, {
+  foreignKey: 'idLabo',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
+AgentLabo.belongsTo(Labo, {
+  foreignKey: 'idLabo',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
 
-Pharmacy.hasMany(AgentPharma)
-AgentPharma.belongsTo(Pharmacy)
+// Associations for Pharmacy and AgentPharma
+Pharmacy.hasMany(AgentPharma, {
+  foreignKey: 'idPharmacy',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
+AgentPharma.belongsTo(Pharmacy, {
+  foreignKey: 'idPharmacy',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
 
-CliniqueLabo.hasMany(AgentCliniqueLabo)
-AgentCliniqueLabo.belongsTo(CliniqueLabo)
+// Associations for CliniqueLabo and AgentCliniqueLabo
+CliniqueLabo.hasMany(AgentCliniqueLabo, {
+  foreignKey: 'idCliniqueLabo',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
+AgentCliniqueLabo.belongsTo(CliniqueLabo, {
+  foreignKey: 'idCliniqueLabo',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+});
 
 
 /** relation police-maladie */

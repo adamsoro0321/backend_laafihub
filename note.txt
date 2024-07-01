@@ -1,26 +1,19 @@
-=====1.tous les endpoint doive etre tester
-
-====Auht doive etre gere
-
-heroku create 
-git push heroku master
-
-sup cache: heroku config:unset NODEMODULESCACHE
-
-heroku config:set VARIABLE_NAME=value
+=====prochain defi
+1.envoie du mail
+2.
 
 
-=========heroku======
-sup cache: heroku config:unset NODEMODULESCACHE
 
-heroku config:set VARIABLE_NAME=value
 
-heroku plugins:install heroku-repo
 
-heroku repo:purge_cache -a nom_de_votre_application
 
-heroku run bash
 
-ancient-springs-10322
 
-new Sequelize(process.env.DATABASE_URL)
+
+
+/**8.0 MedecinConseilleControllers */ 
+app.get('/api/v1/medecinconseille',auth, (req,res)=> MedecinConseilleControllers.getAllMedecinConseille(req,res));
+app.get('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.getMedecinConseilleById(req, res));
+app.put('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.updateMedecinConseille(req,res));
+app.post('/api/v1/medecinconseille',auth, (req,res)=>MedecinConseilleControllers.createMedecinConseille(req,res));
+app.delete('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.deleteMedecinConseille(req,res)) ;
