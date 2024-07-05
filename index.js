@@ -8,7 +8,7 @@ const {
     MedecinCliniqueControllers,
     OperationMedicalControllers ,
     AgentAssuranceControllers,
-    MedecinConseilleControllers,
+
     MaladieControllers,
     AgentCliniqueControllers ,
     PoliceControllers,
@@ -45,24 +45,22 @@ app.get('/',(req,res)=>{
  app.get('/api/v1/asssurance/admins',auth, (req,res)=> AgentAssuranceControllers.getAllAdmins(req,res));
  app.get('/api/v1/asssurance/agent/:id',auth, (req,res)=>AgentAssuranceControllers.getAgentAssuranceById(req, res));
  app.put('/api/v1/asssurance/agent/:id',auth, (req,res)=>AgentAssuranceControllers.updatAgentAssurance(req,res));
- app.post('/api/v1/asssurance/agent',auth ,(req,res)=>AgentAssuranceControllers.createAgentAssurance(req,res));
+ app.post('/api/v1/asssurance/agent',auth , AppMulter.single('file'),(req,res)=>AgentAssuranceControllers.createAgentAssurance(req,res));
  app.delete('/api/v1/asssurance/agent/:id',auth, (req,res)=>AgentAssuranceControllers.deleteAgentAssurance(req,res))
  app.get('/api/v1/asssurance/agents/type/:type',auth,  (req,res)=>AgentAssuranceControllers.getAllAgentWhere(req,res) )
 
-/**8.0 MedecinConseilleControllers */ 
-app.get('/api/v1/medecinconseille',auth, (req,res)=> MedecinConseilleControllers.getAllMedecinConseille(req,res));
-app.get('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.getMedecinConseilleById(req, res));
-app.put('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.updateMedecinConseille(req,res));
-app.post('/api/v1/medecinconseille',auth, (req,res)=>MedecinConseilleControllers.createMedecinConseille(req,res));
-app.delete('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.deleteMedecinConseille(req,res)) ;
+
 
 /**2.0 assure endpont */
  app.get('/api/v1/assures',auth, (req,res)=> AssureControllers.getAllAssure(req,res));
  app.get('/api/v1/assure/:id',auth,(req,res)=>AssureControllers.getAssureById(req, res));
  app.put('/api/v1/assure/:id',auth, (req,res)=>AssureControllers.updatAssure(req,res));
- app.post('/api/v1/assure',auth,(req,res)=>AssureControllers.createAssure(req,res));
- app.delete('/api/v1/assure/:id',auth,(req,res)=>AssureControllers.deleteAssure(req,res))
+ app.post('/api/v1/assure', AppMulter.single('file'), auth,(req,res)=>AssureControllers.createAssure(req,res));
+ app.delete('/api/v1/assure/:id',auth,(req,res)=>AssureControllers.deleteAssure(req,res));
+
+ /*** nomination a revoir */
  app.get('/api/v1/assure/prescriptions/:id',auth ,(req,res)=>AssureControllers.getPrescription(req, res));
+ app.get('/api/v1/assure/:id/prescriptions',auth ,(req,res)=>AssureControllers.getPrescription(req, res));
 
 
 /**4.0 partenaire endpoint  */
@@ -73,14 +71,14 @@ app.get('/api/v1/partenaires/laboratoires',auth, (req,res)=> PartenaireControlle
 app.get('/api/v1/partenaires/cliniquelaboratoires',auth, (req,res)=> PartenaireControllers.getAllCliniqueLaboratoire(req,res));
 app.get('/api/v1/partenaire/:id',auth, (req,res)=>PartenaireControllers.getPartenaireById(req, res));
 app.put('/api/v1/partenaire/:id',auth, (req,res)=>PartenaireControllers.updatPartenaire(req,res));
-app.post('/api/v1/partenaire',auth, (req,res)=>PartenaireControllers.createPartenaire(req,res));
+app.post('/api/v1/partenaire',auth, AppMulter.single('file'), (req,res)=>PartenaireControllers.createPartenaire(req,res));
 app.delete('/api/v1/partenaire/:id',auth, (req,res)=>PartenaireControllers.deletePartenaire(req,res)) ;
 
 /** 5.0 MedecinCliniqueControllers */ 
 app.get('/api/v1/medecincliniques', auth, (req,res)=> MedecinCliniqueControllers.getAllMedecinClinique(req,res));
 app.get('/api/v1/medecinclinique/:id',auth, (req,res)=>MedecinCliniqueControllers.getMedecinCliniqueById(req, res));
 app.put('/api/v1/medecinclinique/:id',auth, (req,res)=>MedecinCliniqueControllers.updatMedecinClinique(req,res));
-app.post('/api/v1/medecinclinique',auth, (req,res)=>MedecinCliniqueControllers.createMedecinClinique(req,res));
+app.post('/api/v1/medecinclinique',auth, AppMulter.single('file'), (req,res)=>MedecinCliniqueControllers.createMedecinClinique(req,res));
 app.delete('/api/v1/medecinclinique/:id',auth, (req,res)=>MedecinCliniqueControllers.deleteMedecinClinique(req,res)) ;
 
 /**6.0   PoliceControllers */ 
@@ -97,22 +95,22 @@ app.delete('/api/v1/police/:id',auth, (req,res)=>  PoliceControllers.deletePolic
 app.get('/api/v1/maladies',auth,  (req,res)=>MaladieControllers.getAllMaladie(req,res));
 app.get('/api/v1/maladie/:id',auth, (req,res)=>MaladieControllers.getMaladieById(req, res));
 app.put('/api/v1/maladie/:id',auth, (req,res)=>MaladieControllers.updateMaladie(req,res));
-app.post('/api/v1/maladie',auth, (req,res)=>MaladieControllers.createMaladie(req,res));
+app.post('/api/v1/maladie',auth, AppMulter.single('file'), (req,res)=>MaladieControllers.createMaladie(req,res));
 app.delete('/api/v1/maladie/:id',auth, (req,res)=>MaladieControllers.deleteMaladie(req,res)) ;
+
 /**10.0 operation-medicale endpoint */
 app.get('/api/v1/operation_medicales',auth,  (req,res)=>OperationMedicalControllers.getAllOperationMedical(req,res));
 app.get('/api/v1/operation_medicale/:id',auth, (req,res)=>OperationMedicalControllers.getOperationMedicalById(req, res));
 app.put('/api/v1/operation_medicale/:id',auth, (req,res)=>OperationMedicalControllers.updatOperationMedical(req,res));
-app.post('/api/v1/operation_medicale',auth, (req,res)=>OperationMedicalControllers.createOperationMedical(req,res));
+app.post('/api/v1/operation_medicale',auth, AppMulter.single('file'), (req,res)=>OperationMedicalControllers.createOperationMedical(req,res));
 app.delete('/api/v1/operation_medicale/:id',auth, (req,res)=>OperationMedicalControllers.deleteOperationMedical(req,res)) ;
-
 
 /**15.0 agentCliniqueControllers */ 
 app.post('/api/v1/clinique/agent/login',  (req,res)=> AgentCliniqueControllers.login(req,res));
 app.get('/api/v1/clinique/agents', auth,  (req,res)=> AgentCliniqueControllers.getAllAgentClinique(req,res));
 app.get('/api/v1/clinique/agent/:id', auth, (req,res)=>AgentCliniqueControllers.getAgentCliniqueById(req, res));
 app.put('/api/v1/clinique/agent/:id', auth, (req,res)=>AgentCliniqueControllers.updateAgentClinique(req,res));
-app.post('/api/v1/clinique/agent', auth, (req,res)=>AgentCliniqueControllers.createAgentClinique(req,res));
+app.post('/api/v1/clinique/agent', auth, AppMulter.single('file'), (req,res)=>AgentCliniqueControllers.createAgentClinique(req,res));
 app.delete('/api/v1/cliniqpharmacyue/agent/:id', auth, (req,res)=>AgentCliniqueControllers.deleteAgentClinique(req,res)) ;
 
 /**16.0 labo && agent pharmacy */
@@ -132,14 +130,14 @@ app.get('/api/v1/laboratoire/agents',auth,  (req,res)=> AgentLaboControllers.get
 app.get('/api/v1/laboratoire/agent/admins',auth,  (req,res)=> AgentLaboControllers.getAllAdmins(req,res));
 app.get('/api/v1/laboratoire/agent/:id',auth, (req,res)=>AgentLaboControllers.getAgentLaboById(req, res));
 app.put('/api/v1/laboratoire/agent/:id',auth, (req,res)=>AgentLaboControllers.updatAgentLabo(req,res));
-app.post('/api/v1/laboratoire/agent',auth, (req,res)=>AgentLaboControllers.createAgentLabo(req,res));
+app.post('/api/v1/laboratoire/agent',auth, AppMulter.single('file'), (req,res)=>AgentLaboControllers.createAgentLabo(req,res));
 app.delete('/api/v1/laboratoire/agent/:id',auth, (req,res)=>AgentLaboControllers.deleteAgentLabo(req,res)) ;
 
 /**16.0 PrescriptionControllers */ 
 app.get('/api/v1/prescriptions', auth,  (req,res)=> PrescriptionControllers.getAllPrescription(req,res));
 app.get('/api/v1/prescription/:id', auth, (req,res)=>PrescriptionControllers.getPrescriptionById(req, res));
 app.put('/api/v1/prescription/:id', auth, (req,res)=>PrescriptionControllers.updatPrescription(req,res));
-app.post('/api/v1/prescription', auth, (req,res)=>PrescriptionControllers.createPrescription(req,res));
+app.post('/api/v1/prescription', auth, AppMulter.single('file'), (req,res)=>PrescriptionControllers.createPrescription(req,res));
 app.delete('/api/v1/prescription/:id', auth, (req,res)=>PrescriptionControllers.deletePrescription(req,res)) ;
  
 /**17.0 ReclammationControllers */ 
@@ -155,7 +153,7 @@ app.get('/api/v1/structures', auth, (req,res)=>StructureControllers.getAllStruct
 app.get('/api/v1/stucture/:id',auth,(req,res)=>StructureControllers.getStructureById(req, res));
 app.get('/api/v1/stucture/matricule/:structureId',auth,(req,res)=>StructureControllers.getMatriculeById(req, res));
 app.put('/api/v1/structure/:id',auth,(req,res)=>StructureControllers.updatStructure(req,res));
-app.post('/api/v1/structure',auth,(req,res)=>StructureControllers.createStructure(req,res));
+app.post('/api/v1/structure',auth, AppMulter.single('file'),(req,res)=>StructureControllers.createStructure(req,res));
 app.delete('/api/v1/structure/:id',auth,(req,res)=>StructureControllers.deleteStructure(req,res)) ;
 app.get('/api/v1/stucture_code',auth,(req,res)=>StructureControllers.getStructureCode(req, res));
 app.get('/api/v1/structure/:id/details',auth, (req,res)=>StructureControllers.getDetail(req,res) );
@@ -178,7 +176,7 @@ app.delete('/api/v1/categorie/:id',auth, (req,res)=>CategoriControllers.deleteCa
 app.get('/api/v1/produit_medicals',auth,  (req,res)=>produitMedicalControllers.getAllproduitMedical(req,res) );
 app.get('/api/v1/produit_medical/:id',auth, (req,res)=>produitMedicalControllers.getproduitMedicalById(req,res));
 app.put('/api/v1/produit_medical/:id',auth, (req,res)=>produitMedicalControllers.updatproduitMedical(req,res));
-app.post('/api/v1/produit_medical',auth, (req,res)=>produitMedicalControllers.createproduitMedical(req,res));
+app.post('/api/v1/produit_medical',auth, AppMulter.single('file'), (req,res)=>produitMedicalControllers.createproduitMedical(req,res));
 app.delete('/api/v1/produit_medical/:id',auth, (req,res)=>produitMedicalControllers.deleteproduitMedical(req,res)) ;
 
 /** upload image with multer */

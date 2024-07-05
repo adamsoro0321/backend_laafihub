@@ -2,6 +2,9 @@ const {AgentPharma,Pharmacy }=require('../sequelize');
 const bcrypt =require('bcrypt') ;
 const jwt =require('jsonwebtoken'); 
 const private_jwt_key = require('../middleware/auth/private_key');
+const { LAAFISEEBE_PLATEFORME } = require('../constant/constant');
+const { mailToNewAgent } = require('../services/mailer/mailService');
+const { passWordGenerated } = require('../utils/utils');
 
 const getAllAgentPharma =async (req,res)=>{
       try {
@@ -38,7 +41,9 @@ const getAgentPharmaById =async (req,res)=>{
 const createAgentPharma =async (req,res)=>{
     try {
         const { email, tel, password: inputPassword } = req.body;
-       
+        if (!email) {
+            return res.status(400).json({ error: 'Aucun email trouvé' });
+          }
         // Vérification si l'email est déjà utilisé
         const emailExists = await AgentPharma.findOne({ where: { email } });
         if (emailExists) {
@@ -53,7 +58,7 @@ const createAgentPharma =async (req,res)=>{
 
         const image = req.file ? `${req.file.filename}`: null;
         // Si aucun mot de passe n'est fourni, définir un mot de passe par défaut
-        const password = inputPassword || '123456';
+        const password = inputPassword || passWordGenerated();
           // Hash du mot de passe
           const hashedPassword = await bcrypt.hash(password, 10); 
        
@@ -62,6 +67,9 @@ const createAgentPharma =async (req,res)=>{
             password: hashedPassword,
             image
         });
+        const to=email ;
+        const url=LAAFISEEBE_PLATEFORME.PHARMACY ;
+        await mailToNewAgent(to ,email,password,url);
         res.status(201).json({ message:'succes create  agent ',data}) ;
     } catch (error) {
         console.error(error);
