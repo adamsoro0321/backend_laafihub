@@ -16,6 +16,7 @@ const getAllAgentAssurance =async (req,res)=>{
         res.status(500).json({ error: 'Something went wrong' });
       }
 }
+
 const getAllAdmins =async (req,res)=>{
     try {
       const data = await AgentAssurance.findAll({ where: { type:'admin' } }) ;
@@ -25,6 +26,8 @@ const getAllAdmins =async (req,res)=>{
       res.status(500).json({ error: 'Something went wrong' });
     }
 }
+
+
 const getAllMedecins =async (req,res)=>{
     try {
       const data = await AgentAssurance.findAll({ where: { type:'medecin' } }) ;
@@ -49,6 +52,7 @@ const getAgentAssuranceById =async (req,res)=>{
         res.status(500).json({ error: 'Something went wrong' });
     }
 }
+
 const getAgentWhereById =async (req,res)=>{
     try {
         const id =req.params.id ;
@@ -208,7 +212,31 @@ const changePassword=async (req, res) => {
   }
 
 
+  const createAgentAssurance_without_request =async (agent)=>{
+    try {
+      const {inputPassword,email} =agent ;
+      const old_agent = await AgentAssurance.findOne({ where: { email } });
+      
+      if (old_agent) {
+      
+        return null
+      }
+        // Si aucun mot de passe n'est fourni, définir un mot de passe par défaut
+        const password = inputPassword || passWordGenerated();
+          // Hash du mot de passe
+          const hashedPassword = await bcrypt.hash(password, 10); // Utilisation de 10 rounds de salage
 
+        const data =await AgentAssurance.create({
+            ...agent, 
+            password: hashedPassword,
+        });
+       return {email,password}
+       
+    } catch (error) {
+        console.error(error);
+      return null ;
+    }
+} 
 
 module.exports.AgentAssuranceControllers={
     getAllAgentAssurance,
@@ -217,9 +245,10 @@ module.exports.AgentAssuranceControllers={
     updatAgentAssurance,
     deleteAgentAssurance,
     login,
-  getAllAdmins,
-  getAllMedecins,
+    getAllAdmins,
+    getAllMedecins,
     getAgentWhereById,
-    changePassword
+    changePassword,
+    createAgentAssurance_without_request
 }
 // re

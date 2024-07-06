@@ -1,16 +1,24 @@
 const app = require("./index");
+
 const sendAppStart = require("./src/services/mailer/startEmail");
 
 
 const port =process.env.PORT || 5000 ;
 const HOST='127.0.0.1' ;
 
+/** send email  */
 const url=process.env.NODE_ENV='production'?process.env.APP_HOST:`http://${HOST}:${port}/` ;
 
 (
     async()=>{
-      // await sendAppStart(url)  ;
+     /**creer un admine tenvoie un email */
+     
+      await sendAppStart(url)  ;
     }
 )()
 
-app.listen(port,()=>{console.log("app is running on port "+port)})  
+
+
+
+
+app.listen(port,()=>{console.log(`${url}`)})  
