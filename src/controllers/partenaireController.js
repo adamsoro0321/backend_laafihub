@@ -67,7 +67,23 @@ const getPartenaireById =async (req,res)=>{
 
 const createPartenaire =async (req,res)=>{
     try {
-        
+      const { email, tel, code } = req.body;
+      if (!code) {
+        return res.status(400).json({ error: 'aucun code trouver' });
+      }
+      // Vérification si l'email est déjà utilisé
+      const emailExists = await Partenaire.findOne({ where: { email } });
+      if (emailExists) {
+          return res.status(400).json({ error: 'L\'email est déjà utilisé' });
+      }
+      const codeExists = await Partenaire.findOne({ where: { code } });
+      if (emailExists) {
+          return res.status(400).json({ error: 'Le code est déjà utilisé' });
+      }
+      const telExists = await Partenaire.findOne({ where: { tel } });
+      if (emailExists) {
+          return res.status(400).json({ error: 'Le numero est déjà utilisé' });
+      }
         const form_res=req.body ;
         const data =await Partenaire.create(form_res);
         res.status(201).json({ message:'succes create  partenaire',data}) ;
@@ -111,7 +127,18 @@ const deletePartenaire=async (req,res)=>{
         res.status(500).json({ error: 'Something went wrong' });
     }
 }
-
+const getCode =async (req,res)=>{
+     try {
+      const pCount = await Partenaire.count();
+      // Générer un random de 3 chiffres
+      const randomDigits = Math.floor(100 + Math.random() * 900);
+      // Générer le matricule suggéré
+      const code = `${pCount + 1}${randomDigits}`; // +1 pour le prochain assuré
+      res.status(200).json({code});
+     } catch (error) {
+      res.status(500).json({ error: 'Something went wrong' });
+     }
+}
 module.exports.PartenaireControllers={
     getAllPartenaire,
     getPartenaireById,
@@ -121,5 +148,6 @@ module.exports.PartenaireControllers={
     getAllClinique,
     getAllCliniqueLaboratoire,
     getAllLaboratoire,
-    getAllPharmacy
+    getAllPharmacy,
+    getCode
 }

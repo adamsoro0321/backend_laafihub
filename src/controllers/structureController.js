@@ -139,6 +139,38 @@ const getDetail =async (req,res)=>{
     }
 }
 
+const getMatricule = async (req, res) => {
+    try {
+        const {  codestrucutre:code} = req.params;
+        if (!code) {
+            return res.status(400).json({ error: "Vous n'avez pas fourni l'identité de la structure" });
+        }
+      
+        // Trouver la structure par code
+        const structure = await Structure.findOne({ where: { code } });
+
+        if (!structure) {
+            return res.status(404).json({ error: 'Structure non trouvée' });
+        }
+        const { id } = structure;
+
+        // Trouver le nombre d'assurés dans cette structure
+        const assureCount = await Assure.count({ where: { idStructure: id } });
+
+        // Générer un random de 3 chiffres
+        const randomDigits = Math.floor(100 + Math.random() * 900);
+
+        // Générer le matricule suggéré
+        const matricule = `${code}-${assureCount + 1}${randomDigits}`; // +1 pour le prochain assuré
+        res.status(201).json({ matricule });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ error: 'Something went wrong' });
+    }
+};
+
+
+  
 module.exports.StructureControllers={
     getAllStructure,
     getStructureById,
@@ -147,5 +179,6 @@ module.exports.StructureControllers={
     deleteStructure, 
     getMatriculeById,
     getStructureCode,
-    getDetail
+    getDetail,
+    getMatricule
 }

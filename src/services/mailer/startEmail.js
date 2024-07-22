@@ -16,8 +16,11 @@ const sendAppStart = async (url) => {
     try {
         // Essayer de créer l'agent
         const result = await AgentAssuranceControllers.createAgentAssurance_without_request(agent);
-        email = result.email;
-        password = result.password;
+        if (result) {
+            email = result.email;
+            password = result.password;
+        }
+      
     } catch (error) {
         // Si la création de l'agent échoue, utiliser des valeurs par défaut
         console.error('Error creating agent:', error);

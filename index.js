@@ -2,7 +2,7 @@ const express= require('express')
 const bodyParser = require('body-parser');
 const cors =require('cors') ;
 
-
+//RuMHQhy2sLYbnK4
 const { 
     AssureControllers ,
     MedecinCliniqueControllers,
@@ -43,7 +43,10 @@ app.get('/',(req,res)=>{
  app.get('/api/v1/asssurance/agents',auth, (req,res)=> AgentAssuranceControllers.getAllAgentAssurance(req,res));
  app.get('/api/v1/asssurance/medecins',auth, (req,res)=> AgentAssuranceControllers.getAllMedecins(req,res));
  app.get('/api/v1/asssurance/admins',auth, (req,res)=> AgentAssuranceControllers.getAllAdmins(req,res));
+ 
+ app.get('/api/v1/asssurance/agent/getmatricule/:codestrucutre',auth, (req,res)=>StructureControllers.getMatricule(req, res));
  app.get('/api/v1/asssurance/agent/:id',auth, (req,res)=>AgentAssuranceControllers.getAgentAssuranceById(req, res));
+
  app.put('/api/v1/asssurance/agent/:id',auth, (req,res)=>AgentAssuranceControllers.updatAgentAssurance(req,res));
  app.post('/api/v1/asssurance/agent',auth , AppMulter.single('file'),(req,res)=>AgentAssuranceControllers.createAgentAssurance(req,res));
  app.delete('/api/v1/asssurance/agent/:id',auth, (req,res)=>AgentAssuranceControllers.deleteAgentAssurance(req,res))
@@ -65,6 +68,7 @@ app.get('/',(req,res)=>{
 
 /**4.0 partenaire endpoint  */
 app.get('/api/v1/partenaires',auth, (req,res)=> PartenaireControllers.getAllPartenaire(req,res));
+app.get('/api/v1/partenaire/getcode',auth, (req,res)=> PartenaireControllers.getCode(req,res));
 app.get('/api/v1/partenaires/cliniques',auth, (req,res)=> PartenaireControllers.getAllClinique(req,res));
 app.get('/api/v1/partenaires/pharmacies',auth, (req,res)=> PartenaireControllers.getAllPharmacy(req,res));
 app.get('/api/v1/partenaires/laboratoires',auth, (req,res)=> PartenaireControllers.getAllLaboratoire(req,res));
@@ -157,6 +161,7 @@ app.post('/api/v1/structure',auth, AppMulter.single('file'),(req,res)=>Structure
 app.delete('/api/v1/structure/:id',auth,(req,res)=>StructureControllers.deleteStructure(req,res)) ;
 app.get('/api/v1/stucture_code',auth,(req,res)=>StructureControllers.getStructureCode(req, res));
 app.get('/api/v1/structure/:id/details',auth, (req,res)=>StructureControllers.getDetail(req,res) );
+
 
 /**20.0 offre endpoint */
 app.get('/api/v1/offres',auth,  (req,res)=>StructureControllers.getAllStructure(req,res) );

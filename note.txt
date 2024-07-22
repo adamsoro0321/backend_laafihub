@@ -4,16 +4,8 @@
 
 
 
+https://ancient-springs-10322-4497b0f6c866.herokuapp.com/
 
+git remote -v
 
-
-
-
-
-
-/**8.0 MedecinConseilleControllers */ 
-app.get('/api/v1/medecinconseille',auth, (req,res)=> MedecinConseilleControllers.getAllMedecinConseille(req,res));
-app.get('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.getMedecinConseilleById(req, res));
-app.put('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.updateMedecinConseille(req,res));
-app.post('/api/v1/medecinconseille',auth, (req,res)=>MedecinConseilleControllers.createMedecinConseille(req,res));
-app.delete('/api/v1/medecinconseille/:id',auth, (req,res)=>MedecinConseilleControllers.deleteMedecinConseille(req,res)) ;
+https://ancient-springs-10322-4497b0f6c866.herokuapp.com/api/v1/assure

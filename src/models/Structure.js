@@ -7,22 +7,16 @@ module.exports.StructureModel = (sequelize, DataTypes) => {
         },
         intitule: {
             type: DataTypes.STRING,
-            unique: {
-                msg: 'L\'intitulé est déjà utilisé'
-            }
+            unique:true
         },
         code: {
             type: DataTypes.STRING,
             allowNull: false,
-            unique: {
-                msg: 'Le code est déjà utilisé'
-            }
+            unique: true
         },
         tel: {
             type: DataTypes.STRING,
-            unique: {
-                msg: 'Le numero est déjà utilisé'
-            }
+            unique: true
         },
         adresse: {
             type: DataTypes.STRING,
@@ -30,9 +24,7 @@ module.exports.StructureModel = (sequelize, DataTypes) => {
         },
         email: {
             type: DataTypes.STRING,
-            unique: {
-                msg: 'Le mail est déjà utilisé'
-            },
+            unique: true,
             validate: {
                 isEmail: true,
             }
