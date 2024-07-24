@@ -139,6 +139,8 @@ app.delete('/api/v1/laboratoire/agent/:id',auth, (req,res)=>AgentLaboControllers
 
 /**16.0 PrescriptionControllers */ 
 app.get('/api/v1/prescriptions', auth,  (req,res)=> PrescriptionControllers.getAllPrescription(req,res));
+app.get('/api/v1/prescriptions/medecin/:id', auth,  (req,res)=> PrescriptionControllers.getAllFromMedecin(req,res));
+
 app.get('/api/v1/prescription/:id', auth, (req,res)=>PrescriptionControllers.getPrescriptionById(req, res));
 app.put('/api/v1/prescription/:id', auth, (req,res)=>PrescriptionControllers.updatPrescription(req,res));
 app.post('/api/v1/prescription', auth, AppMulter.single('file'), (req,res)=>PrescriptionControllers.createPrescription(req,res));

@@ -1,3 +1,4 @@
+const { where } = require('sequelize');
 const { Prescription, Assure, AgentAssurance, AgentClinique, } = require('../sequelize');
 
 const getAllPrescription = async (req, res) => {
@@ -80,6 +81,9 @@ const updatPrescription =async (req, res)=>{
 const deletePrescription=async (req,res)=>{
     try {
         const id =req.params.id ;
+        if (!id) {
+            res.status(404).json({error:'Prescription not found'});
+        }
         const _Prescription = await Prescription.findByPk(id);
         if (_Prescription) {
             await _Prescription.destroy() ;
@@ -90,9 +94,27 @@ const deletePrescription=async (req,res)=>{
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
+       
+    }
+}
+
+const getAllFromMedecin =async (req,res)=>{
+      const {id}=req.params ;
+     try {
+        if (!id) {
+            res.status(404).json({error:'impossible d\identifier le medecin '});
+          }
+         const pres=await Prescription.findAll({
+            where:{idAgentClinique:id },
+            order: ['createdAt'],
+          });
+      
+            res.status(201).json({message:'succes',precriptions:pres});
+       
+     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Something went wrong' });
-    }
+     }
 }
 
 module.exports. PrescriptionControllers={
@@ -101,5 +123,6 @@ module.exports. PrescriptionControllers={
     createPrescription,
     updatPrescription,
     deletePrescription,
+    getAllFromMedecin
 }
 // re

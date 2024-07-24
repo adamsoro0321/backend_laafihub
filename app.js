@@ -13,7 +13,7 @@ const url=process.env.NODE_ENV='production'?process.env.APP_HOST:`http://${HOST}
     async()=>{
      /**creer un admin assurance tenvoie un email */
      
-    //  await sendAppStart(url)  ;
+      await sendAppStart(url)  ;
     }
 )()
 
