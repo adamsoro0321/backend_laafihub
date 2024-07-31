@@ -31,7 +31,10 @@ const { AgentCliniqueLaboModel } = require('./models/agentCliniqueLabo');
 const { AgentLaboModel } = require('./models/agentlabo')
 const { PrescriptionModel } = require('./models/Prescription')
 const { ProduidMedicalModel } = require('./models/produitsMedical')
-
+const { ModulePoliceModel } = require('./models/module')
+const ModulePoliceRelationModel = require('./models/ModulePoliceRelatuion')
+const {  PrescriptionProduitRelationModel } = require('./models/prescriptionProduitRelation')
+const { PrescriptionLaboModel } = require('./models/PrescriptionLabo');
 
 module.exports={
 AssuranceModel,
@@ -58,5 +61,9 @@ RfidIdentifyModel,
 AgentCliniqueLaboModel,
 AgentLaboModel,
 AgentPharmacyceModel,
-ProduidMedicalModel
+ProduidMedicalModel,
+ModulePoliceModel,
+ModulePoliceRelationModel,
+PrescriptionProduitRelationModel,
+PrescriptionLaboModel
 }

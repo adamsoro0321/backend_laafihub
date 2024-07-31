@@ -18,6 +18,7 @@ const { PartenaireControllers } = require('./controllers/partenaireController');
 const { StructureControllers } = require('./controllers/structureController');
 const { CategoriControllers } = require('./controllers/CategoriController');
 const { OperationMedicalControllers } = require('./controllers/operationMedicalControlleur');
+const { ModulePoliceControllers } = require('./controllers/moduleController');
 
 
 module.exports={
@@ -38,5 +39,6 @@ module.exports={
     PartenaireControllers,
     PrescriptionControllers,
     CategoriControllers,
-    OperationMedicalControllers    
+    OperationMedicalControllers,
+    ModulePoliceControllers
 }

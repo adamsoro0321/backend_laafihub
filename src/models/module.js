@@ -1,4 +1,5 @@
-module.exports.AgentAssuranceModel = (sequelize, DataTypes, type = 'agent') => {
+module.exports.ModulePoliceModel = (sequelize, DataTypes) => {
+    /** une police contient de module qui a son tour contient des element ou groupe d'element. enregistrer sous forme json */
     const ModulePolice= sequelize.define('module_police', {
         id: {
             type: DataTypes.INTEGER,
@@ -7,6 +8,7 @@ module.exports.AgentAssuranceModel = (sequelize, DataTypes, type = 'agent') => {
         },
         label: {
             type: DataTypes.STRING,
+            allowNull:false
         },
         description: {
             type: DataTypes.TEXT

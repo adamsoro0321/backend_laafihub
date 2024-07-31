@@ -1,5 +1,5 @@
-module.exports.PrescriptionModel = (sequelize, DataTypes, Assure, AgentClinique, AgentAssurance,agentPharmacy,agentLabo) => {
-    const Prescription = sequelize.define('Prescription', {
+const PrescriptionLaboModel = (sequelize, DataTypes, Assure, AgentClinique, AgentAssurance,agentLabo) => {
+    return sequelize.define('Prescription_labo', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -13,7 +13,6 @@ module.exports.PrescriptionModel = (sequelize, DataTypes, Assure, AgentClinique,
             }
         },
         idAgentClinique: {
-            /** celui qui fait la prescription */
             type: DataTypes.INTEGER,
             references: {
                 model: AgentClinique,
@@ -21,7 +20,6 @@ module.exports.PrescriptionModel = (sequelize, DataTypes, Assure, AgentClinique,
             }
         },
         idMedecinAssurance: {
-            /** le medecin conseiller verifier une prescription est medecalement conforme */
             type: DataTypes.INTEGER,
             references: {
                 model: AgentAssurance,
@@ -29,30 +27,11 @@ module.exports.PrescriptionModel = (sequelize, DataTypes, Assure, AgentClinique,
             }
         },
         idAgentAssurance: {
-            /** lui approuve la prescription ou non apres validation du medecin conseiller */
             type: DataTypes.INTEGER,
             references: {
                 model: AgentAssurance,
                 key: 'id'
             }
-        },
-        idAgentPharmacy:{
-            /** la pharmacien charger de traiter la prescription au cas ou s'il sagit d'une prescription pour achat de produit */
-            type: DataTypes.INTEGER,
-            references: {
-                model: agentPharmacy,
-                key: 'id'
-            }
-            
-        },
-        idAgentLabo:{
-            /** la laboratin charger de faire l'examen prescrit  */
-            type: DataTypes.INTEGER,
-            references: {
-                model: agentLabo,
-                key: 'id'
-            }
-            
         },
         titre: {
             type: DataTypes.STRING
@@ -85,33 +64,20 @@ module.exports.PrescriptionModel = (sequelize, DataTypes, Assure, AgentClinique,
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },
-       type:{
-        type: DataTypes.STRING,
-        defaultValue: 'pharma',
-        validate: {
-            isIn: [['pharma', 'labo']]
-        }
-       },
+        idAgentLabo:{
+            type: DataTypes.INTEGER,
+            references: {
+                model: agentLabo,
+                key: 'id'
+            }
+            
+        },
         satisfyDate:{
             type: DataTypes.DATE,
         
-        },
-        commentAgentPharma:{
-            type: DataTypes.TEXT,
-        },
-        commentAgentLabo:{
-            type: DataTypes.TEXT,
-        },
-        commentAgentMedecinConseille:{
-            type: DataTypes.TEXT,
-        },
-        commentAgentAssurance:{
-            type: DataTypes.TEXT,
-        },
-        commentAgentClinique:{
-            type: DataTypes.TEXT,
         }
     });
 
-    return Prescription;
 };
+
+module.exports={PrescriptionLaboModel}

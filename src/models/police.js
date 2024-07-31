@@ -10,14 +10,9 @@ module.exports.PoliceModel = (sequelize, DataTypes) => {
             allawNull:false,
             unique: true,
         },
-        libelle: DataTypes.STRING,
+        label: DataTypes.STRING,
         description:DataTypes.TEXT ,
-        taux_couvrement:{
-            type: DataTypes.FLOAT,
-        },
-        cout_abonnement:{
-            type: DataTypes.FLOAT,
-        },
+      
         dureeValidite: {
             type: DataTypes.INTEGER, // Peut être exprimée en jours, mois, années, etc.
         }  
